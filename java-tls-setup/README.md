@@ -1,3 +1,9 @@
+# Hand Written Notes
+
+<embed src="https://github.com/sathwickreddyy/java-projects/tree/main/java-tls-setup/notes.pdf" type="application/pdf" width="100%" height="600px" />
+
+[View PDF](https://github.com/sathwickreddyy/java-projects/tree/main/java-tls-setup/notes.pdf)
+
 # What is a Certificate Authority (CA)?
 
 A Certificate Authority (CA) is like a trusted third party that acts as a "notary" for digital certificates. It verifies the identity of entities (like servers or clients) and issues certificates that prove their authenticity. These certificates are used in SSL/TLS communication to establish trust between parties.
@@ -159,5 +165,4 @@ Imagine you're organizing an event where attendees need ID badges:
 Similarly, in SSL/TLS communication, the CA acts as this trusted badge provider!
 
 By using a Certificate Authority for managing trust in your system, you make it easier to scale securely while reducing manual effort in managing individual certificates between clients and servers.
-
 
