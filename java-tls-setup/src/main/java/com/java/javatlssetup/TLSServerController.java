@@ -8,6 +8,7 @@ public class TLSServerController {
 
     @GetMapping("/hello")
     public String sayHello() {
+        System.out.println("Called Bunny Server");
         return "Hello, from TLS Server!";
     }
 }
