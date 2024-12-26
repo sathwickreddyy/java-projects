@@ -12,14 +12,14 @@
 ```
    openssl req -new -x509 -sha256 -days 1000 -key ca-key.pem -out ca-cert.pem
 ```
-   Enter the following details when prompted:
-   Country Name (2 letter code) [AU]: IN
-   State or Province Name (full name) [Some-State]: Telangana
-   Locality Name (eg, city) []: Hyderabad
-   Organization Name (eg, company) [Internet Widgits Pty Ltd]: MS
-   Organizational Unit Name (eg, section) []: Treasury CA
-   Common Name (e.g. server FQDN or YOUR name) []:
-   Email Address []:
+   > - Enter the following details when prompted:
+   > - Country Name (2 letter code) [AU]: IN
+   > - State or Province Name (full name) [Some-State]: Telangana
+   > - Locality Name (eg, city) []: Hyderabad
+   > - Organization Name (eg, company) [Internet Widgits Pty Ltd]: MS
+   > - **Organizational Unit Name (eg, section) []: Treasury CA**
+   > - Common Name (e.g. server FQDN or YOUR name) []:
+   > - Email Address []:
 
 ---
 
@@ -33,17 +33,16 @@ openssl genrsa -out server-key.pem 4096
 ```
    openssl req -new -sha256 -key server-key.pem -out server-csr.csr
 ```
-   Enter the following details when prompted:
-   Country Name (2 letter code) [AU]: IN
-   State or Province Name (full name) [Some-State]: Telangana
-   Locality Name (eg, city) []: Hyderabad
-   Organization Name (eg, company) [Internet Widgits Pty Ltd]: MS
-   Organizational Unit Name (eg, section) []: Treasury Server
-   Common Name (e.g. server FQDN or YOUR name) []:
-   Email Address []:
-
-   Challenge password []: password
-   Optional company name []:
+> - Enter the following details when prompted:
+> - Country Name (2 letter code) [AU]: IN
+> - State or Province Name (full name) [Some-State]: Telangana
+> - Locality Name (eg, city) []: Hyderabad
+> - Organization Name (eg, company) [Internet Widgits Pty Ltd]: MS
+> - **Organizational Unit Name (eg, section) []: Treasury Server**
+> - Common Name (e.g. server FQDN or YOUR name) []:
+> - Email Address []:
+> - Challenge password []: password
+> - Optional company name []:
 
 3. Create a configuration file for subject alternative names:
 ```
@@ -73,17 +72,16 @@ openssl genrsa -out server-key.pem 4096
 ```
    openssl req -new -sha256 -key client-key.pem -out client-csr.csr
 ```
-   Enter the following details when prompted:
-   Country Name (2 letter code) [AU]: IN
-   State or Province Name (full name) [Some-State]: Telangana
-   Locality Name (eg, city) []: Hyderabad
-   Organization Name (eg, company) [Internet Widgits Pty Ltd]: MS
-   Organizational Unit Name (eg, section) []: Treasury Client
-   Common Name (e.g. server FQDN or YOUR name) []:
-   Email Address []:
-
-   Challenge password []: password
-   Optional company name []:
+> -    Enter the following details when prompted:
+> -   Country Name (2 letter code) [AU]: IN
+> -   State or Province Name (full name) [Some-State]: Telangana
+> -   Locality Name (eg, city) []: Hyderabad
+> -   Organization Name (eg, company) [Internet Widgits Pty Ltd]: MS
+> -   **Organizational Unit Name (eg, section) []: Treasury Client**
+> -   Common Name (e.g. server FQDN or YOUR name) []:
+> -   Email Address []:
+> -   Challenge password []: password
+> -   Optional company name []:
 
 3. Create a configuration file for subject alternative names:
 ```
