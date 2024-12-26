@@ -1,3 +1,190 @@
+# Updated Notes
+
+### Steps for Setting Up 2-Way SSL
+
+## 1. CA Key Generation
+1. Generate the CA private key:
+```
+   openssl genrsa -out ca-key.pem 4096
+```
+
+2. Create the CA certificate:
+```
+   openssl req -new -x509 -sha256 -days 1000 -key ca-key.pem -out ca-cert.pem
+```
+   Enter the following details when prompted:
+   Country Name (2 letter code) [AU]: IN
+   State or Province Name (full name) [Some-State]: Telangana
+   Locality Name (eg, city) []: Hyderabad
+   Organization Name (eg, company) [Internet Widgits Pty Ltd]: MS
+   Organizational Unit Name (eg, section) []: Treasury CA
+   Common Name (e.g. server FQDN or YOUR name) []:
+   Email Address []:
+
+---
+
+## 2. Server-Side Process
+1. Generate the server private key:
+```
+openssl genrsa -out server-key.pem 4096
+```
+
+2. Create a certificate signing request (CSR) for the server:
+```
+   openssl req -new -sha256 -key server-key.pem -out server-csr.csr
+```
+   Enter the following details when prompted:
+   Country Name (2 letter code) [AU]: IN
+   State or Province Name (full name) [Some-State]: Telangana
+   Locality Name (eg, city) []: Hyderabad
+   Organization Name (eg, company) [Internet Widgits Pty Ltd]: MS
+   Organizational Unit Name (eg, section) []: Treasury Server
+   Common Name (e.g. server FQDN or YOUR name) []:
+   Email Address []:
+
+   Challenge password []: password
+   Optional company name []:
+
+3. Create a configuration file for subject alternative names:
+```
+   touch server-extfile.cnf && vi server-extfile.cnf
+```
+
+4. Add the following content to `server-extfile.cnf`:
+```
+   subjectAltName=DNS:*.bunny-server.com
+```
+
+5. Sign the server CSR with the CA certificate and key:
+```
+   openssl x509 -req -sha256 -days 1000 -in server-csr.csr \
+   -CA ca-cert.pem -CAkey ca-key.pem -out server-cert.pem \
+   -extfile server-extfile.cnf -CAcreateserial
+```
+---
+
+## 3. Client-Side Process
+1. Generate the client private key:
+```
+   openssl genrsa -out client-key.pem 4096
+```
+
+2. Create a certificate signing request (CSR) for the client:
+```
+   openssl req -new -sha256 -key client-key.pem -out client-csr.csr
+```
+   Enter the following details when prompted:
+   Country Name (2 letter code) [AU]: IN
+   State or Province Name (full name) [Some-State]: Telangana
+   Locality Name (eg, city) []: Hyderabad
+   Organization Name (eg, company) [Internet Widgits Pty Ltd]: MS
+   Organizational Unit Name (eg, section) []: Treasury Client
+   Common Name (e.g. server FQDN or YOUR name) []:
+   Email Address []:
+
+   Challenge password []: password
+   Optional company name []:
+
+3. Create a configuration file for subject alternative names:
+```
+   touch client-extfile.cnf && vi client-extfile.cnf
+```
+
+4. Add the following content to `client-extfile.cnf`:
+```
+   subjectAltName=DNS:*.bunny-client.com
+```
+
+5. Sign the client CSR with the CA certificate and key:
+```
+   openssl x509 -req -sha256 -days 1000 -in client-csr.csr \
+   -CA ca-cert.pem -CAkey ca-key.pem -out client-cert.pem \
+   -extfile client-extfile.cnf -CAcreateserial
+```
+---
+
+## 4. Converting Certificates to JKS
+
+### Server-Side Conversion
+1. Combine the CA certificate, server certificate, and private key into one file:
+```   
+cat ca-cert.pem server-cert.pem server-key.pem > server-combined.pem
+```
+
+2. Convert to PKCS12 format:
+```
+   openssl pkcs12 -export \
+   -in server-combined.pem \
+   -out server-cert.p12 \
+   -name bunny-server
+```
+3. Import into a Java Keystore (JKS):
+```
+   keytool -importkeystore \
+   -srckeystore server-cert.p12 \
+   -srcstoretype pkcs12 \
+   -destkeystore server-keystore.jks
+```
+### Client-Side Conversion
+1. Combine the CA certificate, client certificate, and private key into one file:
+```
+cat ca-cert.pem client-cert.pem client-key.pem > client-combined.pem
+```
+
+2. Convert to PKCS12 format:
+```
+   openssl pkcs12 -export \
+   -in client-combined.pem \
+   -out client-cert.p12 \
+   -name bunny-client
+```
+
+3. Import into a Java Keystore (JKS):
+```
+   keytool -importkeystore \
+   -srckeystore client-cert.p12 \
+   -srcstoretype pkcs12 \
+   -destkeystore client-keystore.jks
+```
+---
+
+## 5. Importing CA Certificates into Trust Stores
+### Explanation of Trust Store Purpose
+The trust stores ensure that both sides (client and server) trust the same Certificate Authority (CA). This enables mutual authentication during SSL handshake.
+
+### Server Trust Store
+1. Convert `ca-cert.pem` to `.cer` format:
+```
+   cp ca-cert.pem ca-cert.cer
+```
+
+2. Import the CA certificate into the server's trust store:
+```
+   keytool -importcert \
+   -keystore server-truststore.jks \
+   -file ca-cert.cer \
+   -alias bunny-client \
+   -storepass password \
+   -trustcacerts \
+   -deststoretype pkcs12
+```
+
+### Client Trust Store
+1. Import the CA certificate into the client's trust store using an alias like `bunny-server`:
+```
+   keytool -importcert \
+   -keystore client-truststore.jks \
+   -file ca-cert.cer \
+   -alias bunny-server \
+   -storepass password \
+   -trustcacerts \
+   -deststoretype pkcs12
+```
+---
+
+
+
+
 # Hand Written Notes
 
 <embed src="https://github.com/sathwickreddyy/java-projects/tree/main/java-tls-setup/notes.pdf" type="application/pdf" width="100%" height="600px" />
