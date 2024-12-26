@@ -27,7 +27,6 @@ public class TLSClientController {
             return response;
         } catch (Exception e) {
             System.out.println("TLS Controller lo Error ra bunny "+e.getLocalizedMessage());
-//            e.printStackTrace();
         }
         return response;
     }
