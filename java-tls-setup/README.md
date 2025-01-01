@@ -1,6 +1,5 @@
-# Updated Notes
 
-### Steps for Setting Up 2-Way SSL
+# 1. Steps for Setting Up 2-Way SSL in local Manual setup
 
 ## 1. CA Key Generation
 1. Generate the CA private key:
@@ -180,7 +179,7 @@ The trust stores ensure that both sides (client and server) trust the same Certi
 ```
 ---
 
-# Achieving the same with Private CA and Signed Server Certificate 
+# 2. Achieving the same with Private CA and Signed Server Certificate (Corporate Way)
 
 ## 1. Generate a Private CA
 
@@ -277,13 +276,14 @@ sathwick@Sathwicks-MacBook-Air 2-way-ssl % ``` | ![TLS](src/main/resources/templ
 ---
 
 
-# Hand Written Notes
+# 3. Hand Written Notes On Concepts 
 
 <embed src="https://github.com/sathwickreddyy/java-projects/tree/main/java-tls-setup/notes.pdf" type="application/pdf" width="100%" height="600px" />
 
 [View PDF](https://github.com/sathwickreddyy/java-projects/tree/main/java-tls-setup/notes.pdf)
 
-# What is a Certificate Authority (CA)?
+# 4. Glossory
+## What is a Certificate Authority (CA)?
 
 A Certificate Authority (CA) is like a trusted third party that acts as a "notary" for digital certificates. It verifies the identity of entities (like servers or clients) and issues certificates that prove their authenticity. These certificates are used in SSL/TLS communication to establish trust between parties.
 
