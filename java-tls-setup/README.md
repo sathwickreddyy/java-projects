@@ -180,7 +180,100 @@ The trust stores ensure that both sides (client and server) trust the same Certi
 ```
 ---
 
+# Achieving the same with Private CA and Signed Server Certificate 
 
+## 1. Generate a Private CA
+
+![Private CA](src/main/resources/templates/PrivateCA.png)
+
+## 2. Generate a Server Certificate
+
+![Server Certificate](src/main/resources/templates/server_cert.png)
+![Download Certificates](src/main/resources/templates/server_cert_down.png)
+
+## 3. Convert these certificates to pkcs followed by JKS
+
+Note: Below steps prompts for password, must note down the password
+```
+openssl pkcs12 -export \
+  -inkey private_key.txt \
+  -in certificate.txt \
+  -certfile certificate_chain.txt \
+  -out server.p12 \
+  -name server
+```
+```
+keytool -importkeystore \
+-srckeystore server.p12 \
+-srcstoretype pkcs12 \
+-destkeystore server-keystore.jks
+```
+- Now also create the trust store with CA Root certificate this ensures any requests
+coming with CA Root certificate can be trusted to establish connection.
+- KeyStore responsible for sharing the certificate to other entities inorder to establish trust & allowing clients
+to create session key encrypted with server's public key and then send it back to the server in encrypted form and then server decrypts it and uses it to decrypt the session key and then uses it to decrypt the data.
+
+- Now configure in the spring project
+
+![Spring Config](src/main/resources/templates/img.png)
+
+#### Verify the server-keystore.jks and server-truststore.jks
+
+![ServerKeyStore](src/main/resources/templates/ServerKeyStore.png)
+
+![ServerTrustStore](src/main/resources/templates/ServerTrustStore.png)
+
+## Test Connections
+
+### Browser as Client 
+![Test Connection](src/main/resources/templates/TestConnection.png)
+
+### Terminal as Client
+```
+sathwick@Sathwicks-MacBook-Air 2-way-ssl % curl --cacert  Certificate.pem  --verbose https://ec2-3-27-158-205.ap-southeast-2.compute.amazonaws.com:8080/hello
+* Host ec2-3-27-158-205.ap-southeast-2.compute.amazonaws.com:8080 was resolved.
+* IPv6: (none)
+* IPv4: 3.27.158.205
+*   Trying 3.27.158.205:8080...
+* Connected to ec2-3-27-158-205.ap-southeast-2.compute.amazonaws.com (3.27.158.205) port 8080
+* ALPN: curl offers h2,http/1.1
+* (304) (OUT), TLS handshake, Client hello (1):
+*  CAfile: Certificate.pem
+*  CApath: none
+* (304) (IN), TLS handshake, Server hello (2):
+* (304) (IN), TLS handshake, Unknown (8):
+* (304) (IN), TLS handshake, Certificate (11):
+* (304) (IN), TLS handshake, CERT verify (15):
+* (304) (IN), TLS handshake, Finished (20):
+* (304) (OUT), TLS handshake, Finished (20):
+* SSL connection using TLSv1.3 / AEAD-CHACHA20-POLY1305-SHA256 / [blank] / UNDEF
+* ALPN: server did not agree on a protocol. Uses default.
+* Server certificate:
+*  subject: CN=ec2-3-27-158-205.ap-southeast-2.compute.amazonaws.com
+*  start date: Jan  1 00:24:36 2025 GMT
+*  expire date: Jan 31 01:24:36 2026 GMT
+*  subjectAltName: host "ec2-3-27-158-205.ap-southeast-2.compute.amazonaws.com" matched cert's "ec2-3-27-158-205.ap-southeast-2.compute.amazonaws.com"
+*  issuer: C=IN; O=MorganStanley; OU=Engineering; ST=Karnataka; CN=MSBLRCA; L=Bengaluru
+*  SSL certificate verify ok.
+* using HTTP/1.x
+> GET /hello HTTP/1.1
+> Host: ec2-3-27-158-205.ap-southeast-2.compute.amazonaws.com:8080
+> User-Agent: curl/8.7.1
+> Accept: */*
+> 
+* Request completely sent off
+< HTTP/1.1 200 
+< Content-Type: text/plain;charset=UTF-8
+< Content-Length: 23
+< Date: Wed, 01 Jan 2025 01:52:10 GMT
+< 
+* Connection #0 to host ec2-3-27-158-205.ap-southeast-2.compute.amazonaws.com left intact
+Hello, from TLS Server!%                                                                                              
+
+sathwick@Sathwicks-MacBook-Air 2-way-ssl %
+```
+
+---
 
 
 # Hand Written Notes
