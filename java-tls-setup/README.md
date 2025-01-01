@@ -229,7 +229,10 @@ to create session key encrypted with server's public key and then send it back t
 ![Test Connection](src/main/resources/templates/TestConnection.png)
 
 ### Terminal as Client
-```
+
+| **Code**                      | **Image**                                    |
+|-------------------------------|----------------------------------------------|
+| ```bash                       |
 sathwick@Sathwicks-MacBook-Air 2-way-ssl % curl --cacert  Certificate.pem  --verbose https://ec2-3-27-158-205.ap-southeast-2.compute.amazonaws.com:8080/hello
 * Host ec2-3-27-158-205.ap-southeast-2.compute.amazonaws.com:8080 was resolved.
 * IPv6: (none)
@@ -256,22 +259,20 @@ sathwick@Sathwicks-MacBook-Air 2-way-ssl % curl --cacert  Certificate.pem  --ver
 *  issuer: C=IN; O=MorganStanley; OU=Engineering; ST=Karnataka; CN=MSBLRCA; L=Bengaluru
 *  SSL certificate verify ok.
 * using HTTP/1.x
-> GET /hello HTTP/1.1
-> Host: ec2-3-27-158-205.ap-southeast-2.compute.amazonaws.com:8080
-> User-Agent: curl/8.7.1
-> Accept: */*
-> 
+*  GET /hello HTTP/1.1
+*  Host: ec2-3-27-158-205.ap-southeast-2.compute.amazonaws.com:8080
+*  User-Agent: curl/8.7.1
+*  Accept: */*
 * Request completely sent off
-< HTTP/1.1 200 
-< Content-Type: text/plain;charset=UTF-8
-< Content-Length: 23
-< Date: Wed, 01 Jan 2025 01:52:10 GMT
-< 
+  < HTTP/1.1 200
+  < Content-Type: text/plain;charset=UTF-8
+  < Content-Length: 23
+  < Date: Wed, 01 Jan 2025 01:52:10 GMT
+  <
 * Connection #0 to host ec2-3-27-158-205.ap-southeast-2.compute.amazonaws.com left intact
-Hello, from TLS Server!%                                                                                              
+  Hello, from TLS Server!%
 
-sathwick@Sathwicks-MacBook-Air 2-way-ssl %
-```
+sathwick@Sathwicks-MacBook-Air 2-way-ssl % ``` | ![TLS](src/main/resources/templates/TLS.png) |
 
 ---
 
