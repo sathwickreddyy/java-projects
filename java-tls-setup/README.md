@@ -211,6 +211,9 @@ keytool -importkeystore \
 coming with CA Root certificate can be trusted to establish connection.
 - KeyStore responsible for sharing the certificate to other entities inorder to establish trust & allowing clients
 to create session key encrypted with server's public key and then send it back to the server in encrypted form and then server decrypts it and uses it to decrypt the session key and then uses it to decrypt the data.
+```
+keytool -import -trustcacerts -file Certificate.pem -alias myCA -keystore server-truststore.jks -storepass password
+```
 
 - Now configure in the spring project
 
