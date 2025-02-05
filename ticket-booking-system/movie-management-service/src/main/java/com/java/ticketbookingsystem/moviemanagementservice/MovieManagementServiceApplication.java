@@ -1,13 +1,13 @@
-package com.java.userservice;
+package com.java.ticketbookingsystem.moviemanagementservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class UserServiceApplication {
+public class MovieManagementServiceApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(UserServiceApplication.class, args);
+        SpringApplication.run(MovieManagementServiceApplication.class, args);
     }
 
 }

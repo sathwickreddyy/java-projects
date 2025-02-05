@@ -1,4 +1,4 @@
-package com.java.searchservice;
+package com.java.ticketbookingsystem.searchservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

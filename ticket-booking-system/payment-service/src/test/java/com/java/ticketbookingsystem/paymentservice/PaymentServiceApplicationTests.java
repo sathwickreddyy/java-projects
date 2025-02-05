@@ -1,10 +1,10 @@
-package com.java.searchservice;
+package com.java.ticketbookingsystem.paymentservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class SearchServiceApplicationTests {
+class PaymentServiceApplicationTests {
 
     @Test
     void contextLoads() {

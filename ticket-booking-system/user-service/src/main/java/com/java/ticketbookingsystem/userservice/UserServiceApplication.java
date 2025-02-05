@@ -1,13 +1,13 @@
-package com.java.paymentservice;
+package com.java.ticketbookingsystem.userservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class PaymentServiceApplication {
+public class UserServiceApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(PaymentServiceApplication.class, args);
+        SpringApplication.run(UserServiceApplication.class, args);
     }
 
 }
