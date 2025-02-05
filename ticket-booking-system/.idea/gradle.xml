@@ -4,7 +4,6 @@
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleHome" value="" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
@@ -12,46 +11,6 @@
             <option value="$PROJECT_DIR$/payment-service" />
             <option value="$PROJECT_DIR$/search-service" />
             <option value="$PROJECT_DIR$/ticket-service" />
-            <option value="$PROJECT_DIR$/user-service" />
-          </set>
-        </option>
-      </GradleProjectSettings>
-      <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$/movie-management-service" />
-        <option name="modules">
-          <set>
-            <option value="$PROJECT_DIR$/movie-management-service" />
-          </set>
-        </option>
-      </GradleProjectSettings>
-      <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$/payment-service" />
-        <option name="modules">
-          <set>
-            <option value="$PROJECT_DIR$/payment-service" />
-          </set>
-        </option>
-      </GradleProjectSettings>
-      <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$/search-service" />
-        <option name="modules">
-          <set>
-            <option value="$PROJECT_DIR$/search-service" />
-          </set>
-        </option>
-      </GradleProjectSettings>
-      <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$/ticket-service" />
-        <option name="modules">
-          <set>
-            <option value="$PROJECT_DIR$/ticket-service" />
-          </set>
-        </option>
-      </GradleProjectSettings>
-      <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$/user-service" />
-        <option name="modules">
-          <set>
             <option value="$PROJECT_DIR$/user-service" />
           </set>
         </option>
