@@ -83,6 +83,11 @@ public class CognitoJWTValidator {
 
     /**
      * Constructs JWT verifier with security requirements
+     * Why These Validations Matter:
+     * Issuer Check: Prevents tokens from other user pools
+     * Audience Check: Ensures token was issued for this client
+     * Token Use: Restricts to access/id tokens (excludes refresh tokens)
+     * JWKS Verification: Validates token signature against current keys
      */
     private JWTVerifier buildVerifier(Algorithm algorithm) {
         return JWT.require(algorithm)

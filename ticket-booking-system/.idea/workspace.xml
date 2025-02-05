@@ -5,15 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="97d30be4-257c-4abd-b7a6-4797b978bba4" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/user-service/src/main/java/com/java/ticketbookingsystem/userservice/configuration/CognitoConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/user-service/src/main/java/com/java/ticketbookingsystem/userservice/exception/TBSUserServiceException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/user-service/src/main/java/com/java/ticketbookingsystem/userservice/security/JwtAuthenticationFilter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/user-service/src/main/java/com/java/ticketbookingsystem/userservice/security/SecurityConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/user-service/src/main/java/com/java/ticketbookingsystem/userservice/utils/CognitoJWTValidator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/user-service/src/main/java/com/java/ticketbookingsystem/userservice/utils/CognitoJwtDecoder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/user-service/src/main/java/com/java/ticketbookingsystem/userservice/configuration/ControllerAdvice.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/user-service/src/main/java/com/java/ticketbookingsystem/userservice/dto/ApiErrorResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/user-service/src/main/java/com/java/ticketbookingsystem/userservice/dto/UserDetails.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/user-service/src/main/java/com/java/ticketbookingsystem/userservice/service/UserService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/user-service/src/main/java/com/java/ticketbookingsystem/userservice/service/impl/UserServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user-service/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/java/ticketbookingsystem/userservice/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/com/java/ticketbookingsystem/userservice/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/java/ticketbookingsystem/userservice/utils/CognitoJWTValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/com/java/ticketbookingsystem/userservice/utils/CognitoJWTValidator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user-service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -88,6 +88,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -479,7 +480,7 @@
       <workItem from="1738751163730" duration="320000" />
       <workItem from="1738751503021" duration="2731000" />
       <workItem from="1738755231423" duration="718000" />
-      <workItem from="1738755964763" duration="7977000" />
+      <workItem from="1738755964763" duration="11366000" />
     </task>
     <servers />
   </component>
