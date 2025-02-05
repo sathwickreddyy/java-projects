@@ -69,7 +69,7 @@ DELETE /v1/admin/users/{userId}   # Deactivate user
 ### Ticket Service
 ```
 # Shows & Bookings
-POST /v1/shows                    # Create show (movieId, hallId, timing) for theatre owners
+POST /v1/shows                    # Create show (theatreId, movieId, hallId, timing, date) for theatre owners
 GET  /v1/shows?movie={id}&date={YYYY-MM-DD} # Filter by date
 POST /v1/shows/{showId}/reserve   # Reserve seats (body: seats[], timeout=15m) for users
 PATCH /v1/bookings/{bookingId}    # Add/remove seats pre-payment
@@ -111,3 +111,6 @@ POST /v1/payments                 # Initiate payment (bookingId, amount)
 PUT  /v1/payments/{txnId}         # Confirm/cancel payment
 GET  /v1/payments/{txnId}          # Check status
 ```
+
+## Middleware
+- Upon every request, we need to perform user Authentication to fetch the current user who is performing the request.
