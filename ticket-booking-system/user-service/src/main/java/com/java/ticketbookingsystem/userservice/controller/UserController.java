@@ -1,5 +1,7 @@
 package com.java.ticketbookingsystem.userservice.controller;
 
+import com.java.ticketbookingsystem.userservice.dto.AuthenticationRequest;
+import com.java.ticketbookingsystem.userservice.dto.AuthenticationResponse;
 import com.java.ticketbookingsystem.userservice.dto.TokenResponse;
 import com.java.ticketbookingsystem.userservice.dto.UserDetails;
 import com.java.ticketbookingsystem.userservice.dto.UserDetails.UserRole;
@@ -116,6 +118,43 @@ public class UserController {
         } else {
             throw new TBSUserServiceException("Authorization token is missing");
         }
+    }
+
+    @Operation(summary = "Sign in user",
+            description = "Signs in a user and returns a JWT token")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User signed in successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid sign-in request"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    @PostMapping("/signin")
+    public ResponseEntity<AuthenticationResponse> signIn(
+            @Parameter(description = "Sign-in credentials", required = true)
+            @RequestBody AuthenticationRequest signInRequest
+    ) {
+        try {
+            AuthenticationResponse response = userService.signIn(signInRequest);
+            return ResponseEntity.ok(response);
+        }
+        catch (Exception e)
+        {
+            log.info("Failed to sign in user: {}", e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @Operation(summary = "Sign out user",
+            description = "Signs out the current user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "User signed out successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid sign-out request"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    @DeleteMapping("/signout")
+    public ResponseEntity<Void> signOut(@RequestHeader("Authorization") String token)
+    {
+        userService.signOut(token);
+        return ResponseEntity.noContent().build();
     }
 
     /**

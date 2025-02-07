@@ -1,8 +1,14 @@
 package com.java.ticketbookingsystem.userservice.service.impl;
 
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
+import com.java.ticketbookingsystem.userservice.dto.AuthenticationRequest;
+import com.java.ticketbookingsystem.userservice.dto.AuthenticationResponse;
 import com.java.ticketbookingsystem.userservice.dto.UserDetails;
 import com.java.ticketbookingsystem.userservice.exception.TBSUserServiceException;
 import com.java.ticketbookingsystem.userservice.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,6 +18,8 @@ import software.amazon.awssdk.services.cognitoidentityprovider.CognitoIdentityPr
 import software.amazon.awssdk.services.cognitoidentityprovider.model.*;
 
 import java.util.Collection;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -40,12 +48,16 @@ public class UserServiceImpl implements UserService {
     @Value("${aws.cognito.userPoolId}")
     private String userPoolId;
 
+    @Value("${aws.cognito.clientId}")
+    private String clientId;
+
     /**
      * Custom attribute name in Cognito that stores user roles.
      * This attribute is used for role-based access control.
      */
     @Value("${aws.cognito.userRoleAttribute}")
     private String userRoleAttribute;
+    private final Cache<String, String> tokenCache;
 
     /**
      * Constructor for UserServiceImpl.
@@ -55,6 +67,9 @@ public class UserServiceImpl implements UserService {
      * @throws IllegalArgumentException if cognitoClient is null
      */
     public UserServiceImpl(CognitoIdentityProviderClient cognitoClient) {
+        this.tokenCache = Caffeine.newBuilder()
+                .expireAfterWrite(24, TimeUnit.HOURS)
+                .build();
         if (cognitoClient == null) {
             log.error("CognitoIdentityProviderClient cannot be null");
             throw new IllegalArgumentException("CognitoIdentityProviderClient is required");
@@ -135,6 +150,60 @@ public class UserServiceImpl implements UserService {
             log.error("Role update failed. Username: {}, Target Role: {}, Error: {}",
                     username, role, e.getMessage());
             throw new TBSUserServiceException("Failed to update user role in Cognito", e);
+        }
+    }
+
+    /**
+     * Authenticates a user by verifying their credentials.
+     *
+     * @param signInRequest The authentication request containing username and password
+     * @return AuthenticationResponse containing token and refresh token
+     * @throws TBSUserServiceException if authentication fails
+     */
+    @Override
+    public AuthenticationResponse signIn(AuthenticationRequest signInRequest) {
+        try{
+            InitiateAuthResponse authResponse = cognitoClient.initiateAuth(
+                    r -> r.authFlow(AuthFlowType.USER_PASSWORD_AUTH)
+                            .clientId(clientId)
+                            .authParameters(Map.of(
+                                    "USERNAME", signInRequest.getUsername(),
+                                    "PASSWORD", signInRequest.getPassword()
+                            ))
+            );
+
+            String accessToken = authResponse.authenticationResult().accessToken();
+            String refreshToken = authResponse.authenticationResult().refreshToken();
+            tokenCache.put(accessToken, signInRequest.getUsername());
+            return AuthenticationResponse.builder()
+                    .token(accessToken)
+                    .refreshToken(refreshToken)
+                    .build();
+        }
+        catch (CognitoIdentityProviderException e) {
+            log.error("Failed to sign in user {}", signInRequest.getUsername(), e);
+            throw new TBSUserServiceException("Failed to sign in user", e);
+        }
+    }
+
+    /**
+     * Signs out a user by revoking their refresh token.
+     *
+     * @param token token
+     * @throws TBSUserServiceException if signing out fails
+     */
+    @Override
+    public void signOut(String token) {
+        try {
+            log.info("Signing out user {}", tokenCache.getIfPresent(token));
+            if (token != null)
+            {
+                cognitoClient.globalSignOut(r -> r.accessToken(token));
+                tokenCache.invalidate(token);
+            }
+        } catch (CognitoIdentityProviderException e) {
+            log.error("Failed to sign out user {}", tokenCache.getIfPresent(token), e);
+            throw new TBSUserServiceException("Failed to sign out user", e);
         }
     }
 

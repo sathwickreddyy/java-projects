@@ -1,8 +1,9 @@
 package com.java.ticketbookingsystem.userservice.service;
 
+import com.java.ticketbookingsystem.userservice.dto.AuthenticationRequest;
+import com.java.ticketbookingsystem.userservice.dto.AuthenticationResponse;
 import com.java.ticketbookingsystem.userservice.dto.UserDetails;
 import com.java.ticketbookingsystem.userservice.exception.TBSUserServiceException;
-import software.amazon.awssdk.services.cognitoidentityprovider.model.*;
 
 /**
  * Interface defining the contract for user management operations.
@@ -26,5 +27,22 @@ public interface UserService {
      * @throws TBSUserServiceException if there's an error updating the user role
      */
     void updateUserRole(String username, UserDetails.UserRole role);
+
+    /**
+     * Authenticates a user by verifying their credentials.
+     *
+     * @param signInRequest The authentication request containing username and password
+     * @return AuthenticationResponse containing token and refresh token
+     * @throws TBSUserServiceException if authentication fails
+     */
+    AuthenticationResponse signIn(AuthenticationRequest signInRequest);
+
+    /**
+     * Signs out a user by revoking their refresh token.
+     *
+     * @param token The refresh token used for signing out
+     * @throws TBSUserServiceException if signing out fails
+     */
+    void signOut(String token);
 }
 
