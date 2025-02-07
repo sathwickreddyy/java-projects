@@ -35,4 +35,10 @@ public interface TokenManagementService {
      * @param username the username associated with the tokens
      */
     TokenHolder getTokens(String username);
+
+    /**
+     * Invalidates the tokens for a given username.
+     * @param username the username associated with the tokens
+     */
+    void invalidateTokens(String username);
 }

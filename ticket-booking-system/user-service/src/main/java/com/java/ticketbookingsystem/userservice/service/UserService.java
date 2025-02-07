@@ -40,9 +40,16 @@ public interface UserService {
     /**
      * Signs out a user by revoking their refresh token.
      *
-     * @param token The refresh token used for signing out
+     * @param username username
      * @throws TBSUserServiceException if signing out fails
      */
-    void signOut(String token);
+    void signOut(String username);
+
+    /**
+     * Retrieves the currently authenticated user's details.
+     *
+     * @return UserDetails object representing the authenticated user
+     */
+    UserDetails getCurrentUser();
 }
 

@@ -17,29 +17,43 @@ public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
+    /**
+     * Constructs the SecurityConfig with the JWT authentication filter.
+     *
+     * @param jwtAuthenticationFilter the filter that validates JWT tokens from requests.
+     */
     public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
     }
 
     /**
      * Configures the security filter chain.
-     * This chain:
-     * - Disables CSRF protection.
-     * - Permits unauthenticated access to Swagger UI resources and auth endpoints (/v1/auth/**).
-     * - Requires authentication for any other request.
-     * - Sets the session management to stateless (no HTTP session is stored).
-     * - Adds a JWT authentication filter before the standard UsernamePasswordAuthenticationFilter.
      *
-     * @param http An instance of HttpSecurity to configure web-based security for specific HTTP requests.
-     * @return A fully configured SecurityFilterChain bean.
-     * @throws Exception If there is any configuration error.
+     * The config now permits /v1/users/signin, /v1/users/refresh, and /v1/users/token to match the public endpoints in AuthController.
+     * <p>
+     * The configuration performs the following:
+     * <ul>
+     *   <li>Disables CSRF protection (since JWT is used and our system is stateless).</li>
+     *   <li>Permits unauthenticated access to Swagger UI resources and all endpoints under /v1/auth/**.</li>
+     *   <li>Requires authentication for all other endpoints.</li>
+     *   <li>Sets session management to stateless (no HTTP sessions are stored).</li>
+     *   <li>Adds the JwtAuthenticationFilter before the standard UsernamePasswordAuthenticationFilter.</li>
+     * </ul>
+     * </p>
+     *
+     * @param http an instance of HttpSecurity used for configuring the web security.
+     * @return a fully configured SecurityFilterChain bean.
+     * @throws Exception if an error occurs during configuration.
      */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                // Disable CSRF for stateless JWT usage
                 .csrf(AbstractHttpConfigurer::disable)
+
+                // Set up URL authorization rules
                 .authorizeHttpRequests(auth -> auth
-                        // Allow access to Swagger UI and related paths
+                        // Allow open access to Swagger and API docs resources
                         .requestMatchers(
                                 "/swagger-ui.html",
                                 "/swagger-ui/**",
@@ -47,16 +61,18 @@ public class SecurityConfig {
                                 "/swagger-resources/**",
                                 "/webjars/**"
                         ).permitAll()
-                        // Allow the auth path for login or registration
-                        .requestMatchers("/v1/auth/**").permitAll()
-                        // Require authentication for all other requests
+                        // Allow unauthenticated access to authentication endpoints (adjusted to actual paths)
+                        .requestMatchers("/v1/users/signin", "/v1/users/refresh", "/v1/users/token").permitAll()
+                        // All other endpoints require authentication
                         .anyRequest().authenticated()
                 )
+                // Set session management to stateless
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
+                // Add the JWT authentication filter before the standard filter
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 }
-

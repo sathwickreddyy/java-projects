@@ -54,7 +54,7 @@ public class CognitoJWTValidator {
         String jwksUrl = this.issuerUrl + JWKS_PATH;
         this.jwkProvider = new UrlJwkProvider(new URL(jwksUrl));
 
-        log.info("Initialized Cognito validator:\n- Issuer: {}\n- JWKS: {}", issuerUrl, jwksUrl);
+        log.debug("Initialized Cognito validator:\n- Issuer: {}\n- JWKS: {}", issuerUrl, jwksUrl);
     }
 
     /**

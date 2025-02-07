@@ -29,6 +29,13 @@ public class CognitoConfig {
     @Value("${aws.cognito.region}")
     private String region;
 
+    /**
+     * Custom attribute name in Cognito that stores user roles.
+     * This attribute is used for role-based access control.
+     */
+    @Value("${aws.cognito.userRoleAttribute}")
+    private String userRoleAttribute;
+
     @Bean
     public CognitoJWTValidator cognitoJWTValidator() throws MalformedURLException {
         return new CognitoJWTValidator(clientId, region, userPoolId);
@@ -53,6 +60,8 @@ public class CognitoConfig {
     @Bean
     public CognitoUserPoolDetails getCognitoUserPoolDetails()
     {
-        return new CognitoUserPoolDetails(userPoolId, clientId, region);
+        CognitoUserPoolDetails cognitoUserPoolDetails = new CognitoUserPoolDetails(userPoolId, clientId, region);
+        cognitoUserPoolDetails.setUserRoleAttribute(userRoleAttribute);
+        return cognitoUserPoolDetails;
     }
 }

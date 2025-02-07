@@ -97,4 +97,16 @@ public class TokenManagementServiceImpl implements TokenManagementService {
         }
         return tokenHolder;
     }
+
+    /**
+     * Invalidates the tokens for a given username.
+     *
+     * @param username the username associated with the tokens
+     */
+    @Override
+    public void invalidateTokens(String username) {
+        log.debug("Invalidating token with key: {}", username);
+        tokenCache.invalidate(username);
+        log.info("Token invalidated successfully with key: {}", username);
+    }
 }
