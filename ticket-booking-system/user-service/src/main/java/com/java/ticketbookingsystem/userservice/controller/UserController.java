@@ -1,13 +1,16 @@
 package com.java.ticketbookingsystem.userservice.controller;
 
+import com.java.ticketbookingsystem.userservice.dto.TokenResponse;
 import com.java.ticketbookingsystem.userservice.dto.UserDetails;
 import com.java.ticketbookingsystem.userservice.dto.UserDetails.UserRole;
+import com.java.ticketbookingsystem.userservice.exception.TBSUserServiceException;
 import com.java.ticketbookingsystem.userservice.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -63,6 +66,7 @@ public class UserController {
      *         if user is not found or service error occurs
      */
     @GetMapping("/{username}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Get user details",
             description = "Retrieves detailed information about a specific user")
     @ApiResponses(value = {
@@ -81,6 +85,37 @@ public class UserController {
         log.debug("Retrieved user details for {}: {}", username, userDetails);
 
         return ResponseEntity.ok(userDetails);
+    }
+
+    /**
+     * GET /v1/auth/token
+     *
+     * Endpoint to fetch the raw JWT token provided in the Authorization header.
+     * This is useful for debugging or inspection purposes and does not reissue tokens.
+     *
+     * Example Response:
+     * { "token": "eyJraWQiOiJLT..." }
+     *
+     * @param request HttpServletRequest used to retrieve the Authorization header.
+     * @return A JSON response containing the token.
+     */
+    @Operation(summary = "Fetch JWT token",
+            description = "Fetches the raw JWT token provided in the Authorization header")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Token fetched successfully"),
+        @ApiResponse(responseCode = "400", description = "Invalid or missing Authorization header"),
+            @ApiResponse(responseCode = "403", description = "Access denied"),
+        @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    @GetMapping("/token")
+    public ResponseEntity<TokenResponse> fetchToken(HttpServletRequest request) {
+        String authorization = request.getHeader("Authorization");
+        if (authorization != null && authorization.startsWith("Bearer ")) {
+            String token = authorization.substring(7);
+            return ResponseEntity.ok(new TokenResponse(token));
+        } else {
+            throw new TBSUserServiceException("Authorization token is missing");
+        }
     }
 
     /**

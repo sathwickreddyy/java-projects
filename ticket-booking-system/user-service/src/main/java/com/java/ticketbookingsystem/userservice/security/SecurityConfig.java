@@ -10,7 +10,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-// src/main/java/com/tbs/config/SecurityConfig.java
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -22,6 +21,19 @@ public class SecurityConfig {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
     }
 
+    /**
+     * Configures the security filter chain.
+     * This chain:
+     * - Disables CSRF protection.
+     * - Permits unauthenticated access to Swagger UI resources and auth endpoints (/v1/auth/**).
+     * - Requires authentication for any other request.
+     * - Sets the session management to stateless (no HTTP session is stored).
+     * - Adds a JWT authentication filter before the standard UsernamePasswordAuthenticationFilter.
+     *
+     * @param http An instance of HttpSecurity to configure web-based security for specific HTTP requests.
+     * @return A fully configured SecurityFilterChain bean.
+     * @throws Exception If there is any configuration error.
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
