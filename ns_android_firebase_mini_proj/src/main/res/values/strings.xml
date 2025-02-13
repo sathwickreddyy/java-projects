@@ -1,0 +1,111 @@
+<resources>
+    <string name="app_name">Notification System</string>
+    <string name="title_activity_login">Sign in</string>
+    <string name="enter_email">Enter Email</string>
+    <string name="enter_password">Enter Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="name">Name</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_tools">Tools</string>
+    <string name="menu_share">Share</string>
+    <string name="menu_send">Send</string>
+    <string name="title_activity_main">MainActivity</string>
+
+
+    <string-array name="Course">
+        <item>CSE</item>
+        <item>IT</item>
+        <item>CIV</item>
+        <item>MEC</item>
+        <item>EEE</item>
+        <item>ECE</item>
+        <item>CHEM</item>
+        <item>PROD</item>
+    </string-array>
+
+    <string-array name="Section">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string-array name="toWhom">
+        <item>HOD</item>
+        <item>Teaching Staff</item>
+        <item>Students</item>
+    </string-array>
+
+    <string-array name="Batch">
+        <item>Batch</item>
+        <item>17-21</item>
+        <item>18-22</item>
+        <item>19-23</item>
+        <item>20-24</item>
+        <item>21-25</item>
+        <item>22-26</item>
+        <item>23-27</item>
+        <item>24-28</item>
+        <item>25-29</item>
+        <item>26-30</item>
+        <item>27-31</item>
+        <item>28-32</item>
+        <item>29-33</item>
+        <item>30-34</item>
+        <item>31-35</item>
+        <item>32-36</item>
+        <item>33-37</item>
+        <item>34-38</item>
+        <item>35-39</item>
+        <item>36-40</item>
+        <item>37-41</item>
+        <item>38-42</item>
+        <item>39-43</item>
+        <item>40-44</item>
+        <item>41-45</item>
+        <item>42-46</item>
+        <item>43-47</item>
+        <item>44-48</item>
+        <item>45-49</item>
+        <item>46-50</item>
+        <item>47-51</item>
+        <item>48-52</item>
+        <item>49-53</item>
+        <item>50-54</item>
+        <item>51-55</item>
+        <item>52-56</item>
+        <item>53-57</item>
+        <item>54-58</item>
+        <item>55-59</item>
+        <item>56-60</item>
+    </string-array>
+
+    <string-array name="prefix">
+        <item></item>
+        <item>Mr. </item>
+        <item>Ms. </item>
+        <item>Dr. </item>
+    </string-array>
+
+    <string-array name="suffix">
+        <item>Choose</item>
+        <item>Professor</item>
+        <item>Assoc. Prof.</item>
+        <item>Asst. Prof.</item>
+        <item>other</item>
+    </string-array>
+
+
+</resources>

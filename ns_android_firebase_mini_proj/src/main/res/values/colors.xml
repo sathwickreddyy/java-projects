@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#FFC107</color>
+    <color name="colorPrimaryDark">#FFA000</color>
+    <color name="backgroundColor">#FCFCFC</color>
+    <color name="lightGray">#EDEDED</color>
+    <color name="deepPurple">#7c4cff</color>
+    <color name="Yello">#FFB300</color>
+    <color name="Green">#00bfa5</color>
+    <color name="colorAccent">#ff4081</color>
+    <color name="darkerGrey">#a9a9a9</color>
+    <color name="white_toolbar">#FFFFFF</color>
+    <color name="ColorPrimary">#E4E1E1</color>
+    <color name="red">#F30A0A</color>
+</resources>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:gravity="center"
+    android:background="@drawable/shape2"
+    android:layout_marginTop="1dp"
+    android:padding="10dp"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/img"
+        android:layout_width="30dp"
+        android:layout_marginRight="10dp"
+        android:layout_height="30dp"
+        android:background="@mipmap/file_icon"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/file_name"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:maxLength="50"
+            android:textColor="#F56A6A"
+            android:fontFamily="@font/alegreya_italic"
+            android:textSize="20dp"
+            android:layout_toLeftOf="@id/progress"
+            android:hint="filename.type"/>
+        <ImageView
+            android:id="@+id/progress"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/cancel"
+            android:layout_marginRight="10dp"
+            android:src="@mipmap/progress"/>
+        <ImageView
+            android:id="@+id/cancel"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_delete_forever_black_24dp"/>
+    </RelativeLayout>
+
+</LinearLayout>

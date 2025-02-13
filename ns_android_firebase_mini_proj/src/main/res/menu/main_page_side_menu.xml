@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <group android:checkableBehavior="single">
+        <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="Home" />
+        <item
+            android:id="@+id/nav_profile"
+            android:icon="@drawable/ic_perm_person_black_24dp"
+            android:title="Profile" />
+        <item
+            android:id="@+id/nav_notification"
+            android:icon="@drawable/ic_notifications_active_black_24dp"
+            android:title="Notifications" />
+        <item
+            android:id="@+id/nav_help"
+            android:icon="@drawable/ic_help_black_24dp"
+            android:title="Help" />
+    </group>
+
+    <item android:title="Redirect">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_lms"
+                    android:icon="@drawable/ic_web_black_24dp"
+                    android:title="LMS Login" />
+                <item
+                    android:id="@+id/nav_attendence"
+                    android:icon="@drawable/ic_lab_black_24dp"
+                    android:title="Attendence Login" />
+                <item
+                    android:id="@+id/open_website"
+                    android:icon="@drawable/ic_perm_person_black_24dp"
+                    android:title="CBIT HOME PAGE"/>
+            </group>
+        </menu>
+    </item>
+    <item android:title="Logout"
+        android:id="@+id/logout"
+        android:icon="@drawable/ic_arrow_back_black_24dp">
+    </item>
+
+</menu>

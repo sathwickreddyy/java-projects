@@ -1,0 +1,54 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:fontFamily">@font/font4</item>
+        <item name="colorPrimary">#E3E7BF</item>
+        <item name="colorPrimaryDark">#E29793</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="AppTheme1" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:fontFamily">@font/font4</item>
+        <item name="colorPrimary">#2F3E52</item>
+        <item name="colorPrimaryDark">#2F3E52</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="ProfileTheme" parent="Theme.AppCompat.Light">
+        <item name="colorPrimary">#DF6365</item>
+        <item name="colorPrimaryDark">#0B0A0A</item>
+    </style>
+
+    <style name="NotificationTheme" parent="Theme.AppCompat.Light">
+        <item name="colorPrimary">#200303</item>
+        <item name="colorPrimaryDark">#000000</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="RegisterTheme" parent="Theme.AppCompat.Light">
+        <item name="colorPrimary">#F5F4E5</item>
+        <item name="colorPrimaryDark">#F5F4E5</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+
+    <style name="HomepageSendersTheme" parent="Theme.AppCompat.Light">
+        <item name="android:colorPrimary">#3F51B5</item>
+        <item name="android:colorPrimaryDark">#202F65</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+</resources>

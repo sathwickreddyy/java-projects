@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FEFAF4F4"
+    tools:context=".senders.SendNotification">
+
+    <LinearLayout
+        android:id="@+id/ll1"
+        android:layout_marginBottom="1dp"
+        android:layout_width="match_parent"
+        android:background="#F5161616"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:orientation="horizontal">
+
+            <Spinner
+                android:spinnerMode="dropdown"
+                android:popupBackground="#000000"
+                android:id="@+id/batch"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:entries="@array/Batch"
+                android:textAlignment="center" />
+
+            <Spinner
+                android:id="@+id/course"
+                android:popupBackground="#000000"
+                android:scrollbarSize="4dp"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:entries="@array/Course" />
+            <Spinner
+                android:id="@+id/section"
+                android:popupBackground="#000000"
+                android:layout_width="72dp"
+                android:layout_height="40dp"
+                android:entries="@array/Section" />
+
+            <Button
+                android:id="@+id/select"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:autoSizeMaxTextSize="16dp"
+                android:autoSizeTextType="uniform"
+                android:background="@android:color/transparent"
+                android:fontFamily="@font/alegreya_regular"
+                android:gravity="center"
+                android:textColor="@android:color/white"
+                android:text="Select students" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/show"
+            android:layout_width="match_parent"
+            android:textColor="@android:color/holo_orange_dark"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/alegreya_italic"
+            android:padding="10dp"
+            android:text="" />
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/subject"
+        android:layout_below="@id/ll1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:background="#F5161616"
+        android:fontFamily="@font/alegreya_regular"
+        android:textStyle="bold"
+        android:textColor="@android:color/holo_red_dark"
+        android:maxLength="150"
+        android:textColorHint="#747272"
+        android:layout_marginBottom="1dp"
+        android:hint="SUBJECT"/>
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/subject"
+        android:layout_marginBottom="1dp"
+        android:layout_above="@id/ll2"
+        android:background="#F5161616">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <EditText
+                android:id="@+id/content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_marginBottom="20dp"
+                android:background="@android:color/transparent"
+                android:fontFamily="@font/alegreya_regular"
+                android:hint="Content"
+                android:inputType="textMultiLine"
+                android:padding="5dp"
+                android:textColor="@android:color/white"
+                android:textColorHint="#797676" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"/>
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/ll2"
+        android:background="#F5161616"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_toLeftOf="@id/open_camera"
+                android:layout_alignParentStart="true">
+                <ProgressBar
+                    android:id="@+id/progressbar"
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:foregroundGravity="center"/>
+            </LinearLayout>
+            <ImageView
+                android:id="@+id/open_camera"
+                android:layout_marginEnd="10dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_camera_black_24dp"
+                android:layout_toLeftOf="@+id/attachment"/>
+            <ImageView
+                android:id="@+id/attachment"
+                android:layout_width="40dp"
+                android:layout_marginEnd="10dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_menu_gallery"
+                android:layout_toLeftOf="@+id/send"/>
+            <ImageView
+                android:id="@+id/send"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_menu_send"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"/>
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>

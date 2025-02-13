@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:orientation="vertical"
+    android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
+    <LinearLayout
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginBottom="50dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/shape"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="10dp">
+            <Spinner
+                android:id="@+id/prefix"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:entries="@array/prefix" />
+
+            <EditText
+                android:id="@+id/firstname"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:ems="10"
+                android:gravity="center"
+                android:background="@android:color/transparent"
+                android:hint="First Name"
+                android:inputType="textPersonName"
+                tools:layout_editor_absoluteX="158dp"
+                tools:layout_editor_absoluteY="206dp" />
+        </LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:orientation="horizontal"
+            android:background="@drawable/shape"
+            android:layout_marginBottom="10dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_marginLeft="3dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:layout_toLeftOf="@+id/suffix"
+                android:autoSizeTextType="uniform"
+                android:autoSizeMaxTextSize="16dp"
+                android:text="Last Name"/>
+            <Spinner
+                android:id="@+id/suffix"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:entries="@array/suffix"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:orientation="horizontal"
+            android:background="@drawable/shape"
+            android:layout_marginBottom="10dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Department"
+                android:layout_marginLeft="3dp"
+                android:autoSizeTextType="uniform"
+                android:autoSizeMaxTextSize="16dp"
+                android:layout_toLeftOf="@+id/course"
+                android:gravity="center_vertical"/>
+            <Spinner
+                android:id="@+id/course"
+                android:layout_width="155dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:entries="@array/Course"/>
+
+        </RelativeLayout>
+
+        <EditText
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/shape"
+            android:ems="10"
+            android:gravity="center"
+            android:hint="@string/enter_email"
+            android:inputType="textPersonName"
+            tools:layout_editor_absoluteX="158dp"
+            tools:layout_editor_absoluteY="301dp" />
+
+
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/shape"
+            android:ems="10"
+            android:gravity="center"
+            android:hint="@string/enter_password"
+            android:inputType="textPassword"
+            tools:layout_editor_absoluteX="158dp"
+            tools:layout_editor_absoluteY="576dp" />
+
+        <EditText
+            android:id="@+id/confirmpassword"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:layout_marginBottom="25dp"
+            android:background="@drawable/shape"
+            android:ems="10"
+            android:gravity="center"
+            android:hint="Confirm Password"
+            android:inputType="textPassword"
+            tools:layout_editor_absoluteX="158dp"
+            tools:layout_editor_absoluteY="576dp" />
+
+        <ImageButton
+            android:id="@+id/register"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:clickable="true"
+            android:background="#FFFFFF"
+            android:src="@drawable/registerbutton"
+            tools:layout_editor_absoluteX="173dp"
+            tools:layout_editor_absoluteY="623dp" />
+
+        <ProgressBar
+            android:id="@+id/progress"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+        <ToggleButton
+            android:id="@+id/havelogin"
+            android:layout_alignParentBottom="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#00BE6868"
+            android:layout_gravity="center"
+            android:clickable="true"
+            android:textOff="Already have an account? Click here to login"
+            android:textOn="Already have an account? Click here to login" />
+
+    </LinearLayout>
+
+</LinearLayout>
