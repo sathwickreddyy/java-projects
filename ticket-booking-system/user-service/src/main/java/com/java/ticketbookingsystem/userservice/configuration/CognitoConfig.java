@@ -12,6 +12,7 @@ import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.cognitoidentityprovider.CognitoIdentityProviderClient;
 
 import java.net.MalformedURLException;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -48,7 +49,7 @@ public class CognitoConfig {
     }
 
     @Bean
-    public Cache<String, TokenHolder> getTokenCache()
+    public Cache<String, Map<String, TokenHolder>> getTokenCache()
     {
         // Tokens are cached for 30 minutes; production systems may use Redis or a DB.
         return Caffeine.newBuilder()

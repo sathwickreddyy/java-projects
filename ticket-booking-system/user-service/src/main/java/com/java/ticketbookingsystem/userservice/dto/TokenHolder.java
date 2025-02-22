@@ -1,6 +1,5 @@
 package com.java.ticketbookingsystem.userservice.dto;
 
-import lombok.Builder;
 import lombok.Data;
 
 
@@ -23,4 +22,8 @@ public class TokenHolder {
      * The expiry timestamp in seconds since epoch.
      */
     private long expiryTimestamp;
+    /**
+     * Session ID of the user
+     */
+    private String sessionId;
 }

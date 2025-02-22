@@ -4,6 +4,7 @@ import com.java.ticketbookingsystem.userservice.dto.AuthenticationRequest;
 import com.java.ticketbookingsystem.userservice.dto.AuthenticationResponse;
 import com.java.ticketbookingsystem.userservice.dto.UserDetails;
 import com.java.ticketbookingsystem.userservice.exception.TBSUserServiceException;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * Interface defining the contract for user management operations.
@@ -32,10 +33,11 @@ public interface UserService {
      * Authenticates a user by verifying their credentials.
      *
      * @param signInRequest The authentication request containing username and password
+     * @param sessionId The session ID
      * @return AuthenticationResponse containing token and refresh token
      * @throws TBSUserServiceException if authentication fails
      */
-    AuthenticationResponse signIn(AuthenticationRequest signInRequest);
+    AuthenticationResponse signIn(AuthenticationRequest signInRequest, String sessionId);
 
     /**
      * Signs out a user by revoking their refresh token.
@@ -50,6 +52,6 @@ public interface UserService {
      *
      * @return UserDetails object representing the authenticated user
      */
-    UserDetails getCurrentUser();
+    String getCurrentUser();
 }
 

@@ -90,6 +90,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     /**
+     * Extracts JWT token from Authorization header
+     * @return Raw token or null if not present
+     */
+    private String extractToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader(HttpHeaders.AUTHORIZATION);
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
+            String token = bearerToken.substring(BEARER_PREFIX.length());
+            log.debug("Extracted JWT token from Authorization header");
+            return token;
+        }
+        log.warn("No valid Authorization header found");
+        return null;
+    }
+
+    /**
      * Processes and validates JWT token, setting security context
      * @param token Raw JWT token from header
      */
@@ -113,6 +128,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     /**
      * Sets up Spring Security context with authenticated user details
+     *
      * @param decodedJWT Validated JWT claims
      */
     private void setSecurityContext(DecodedJWT decodedJWT) {
@@ -127,20 +143,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         log.debug("Set security context for user: {}", decodedJWT.getSubject());
     }
 
-    /**
-     * Extracts JWT token from Authorization header
-     * @return Raw token or null if not present
-     */
-    private String extractToken(HttpServletRequest request) {
-        String bearerToken = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
-            String token = bearerToken.substring(BEARER_PREFIX.length());
-            log.debug("Extracted JWT token from Authorization header");
-            return token;
-        }
-        log.warn("No valid Authorization header found");
-        return null;
-    }
 
     /**
      * Extracts granted authorities from Cognito group claims

@@ -138,9 +138,9 @@ public class AuthController {
     @PostMapping("/signin")
     public ResponseEntity<AuthenticationResponse> signIn(
             @Parameter(description = "Sign-in credentials", required = true)
-            @RequestBody AuthenticationRequest signInRequest) {
+            @RequestBody AuthenticationRequest signInRequest, HttpServletRequest request) {
         try {
-            AuthenticationResponse response = userService.signIn(signInRequest);
+            AuthenticationResponse response = userService.signIn(signInRequest, request.getSession().getId());
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             log.error("Failed to sign in user: {}", e.getMessage());
@@ -168,8 +168,9 @@ public class AuthController {
     })
     @DeleteMapping("/signout")
     public ResponseEntity<Void> signOut(@RequestHeader("Authorization") String token) {
-        UserDetails currentUser = userService.getCurrentUser();
-        userService.signOut(currentUser.getUsername());
+        String currentUserName = userService.getCurrentUser();
+        UserDetails currentUserDetails = userService.getUserDetails(currentUserName);
+        userService.signOut(currentUserDetails.getUsername());
         return ResponseEntity.noContent().build();
     }
 
@@ -193,11 +194,11 @@ public class AuthController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @PostMapping("/refresh")
-    public ResponseEntity<AuthenticationResponse> refreshToken(@RequestBody RefreshTokenRequest request) {
-        if (request.getUsername() == null || request.getRefreshToken() == null) {
+    public ResponseEntity<AuthenticationResponse> refreshToken(@RequestBody RefreshTokenRequest refreshTokenRequest, HttpServletRequest request) {
+        if (refreshTokenRequest.getUsername() == null || refreshTokenRequest.getRefreshToken() == null) {
             throw new TBSUserServiceException("Username or refresh token is missing");
         }
-        AuthenticationResponse response = tokenManagementService.refreshTokens(request.getUsername(), request.getRefreshToken());
+        AuthenticationResponse response = tokenManagementService.refreshTokens(request.getSession().getId(), refreshTokenRequest.getUsername(), refreshTokenRequest.getRefreshToken());
         return ResponseEntity.ok(response);
     }
 
@@ -222,17 +223,18 @@ public class AuthController {
     })
     @GetMapping("/getCurrentUser")
     public ResponseEntity<UserDetailsResponse> getCurrentUser() {
-        UserDetails currentUser = userService.getCurrentUser();
-        if (currentUser == null) {
+        String currentUserName = userService.getCurrentUser();
+        UserDetails currentUserDetails = userService.getUserDetails(currentUserName);
+        if (currentUserDetails == null) {
             throw new TBSUserServiceException("No current user found");
         }
         // Map the domain UserDetails to the response DTO.
         UserDetailsResponse response = new UserDetailsResponse();
-        response.setUsername(currentUser.getUsername());
-        response.setName(currentUser.getName());
-        response.setEmail(currentUser.getEmail());
-        response.setGender(currentUser.getGender());
-        response.setPhoneNumber(currentUser.getPhoneNumber());
+        response.setUsername(currentUserDetails.getUsername());
+        response.setName(currentUserDetails.getName());
+        response.setEmail(currentUserDetails.getEmail());
+        response.setGender(currentUserDetails.getGender());
+        response.setPhoneNumber(currentUserDetails.getPhoneNumber());
         return ResponseEntity.ok(response);
     }
 }

@@ -15,6 +15,7 @@ import software.amazon.awssdk.services.cognitoidentityprovider.model.AuthFlowTyp
 
 import java.time.Instant;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 @Service
@@ -22,12 +23,12 @@ public class TokenManagementServiceImpl implements TokenManagementService {
 
     private final CognitoUserPoolDetails cognitoUserPoolDetails;
     private final CognitoIdentityProviderClient cognitoIdentityProviderClient;
-    private final Cache<String, TokenHolder> tokenCache;
+    private final Cache<String, Map<String, TokenHolder>> usersSessionsTokenCache;
 
-    public TokenManagementServiceImpl(CognitoUserPoolDetails cognitoUserPoolDetails, CognitoIdentityProviderClient cognitoIdentityProviderClient, Cache<String, TokenHolder> tokenCache) {
+    public TokenManagementServiceImpl(CognitoUserPoolDetails cognitoUserPoolDetails, CognitoIdentityProviderClient cognitoIdentityProviderClient, Cache<String, Map<String, TokenHolder>> usersSessionsTokenCache) {
         this.cognitoUserPoolDetails = cognitoUserPoolDetails;
         this.cognitoIdentityProviderClient = cognitoIdentityProviderClient;
-        this.tokenCache = tokenCache;
+        this.usersSessionsTokenCache = usersSessionsTokenCache;
     }
 
     /**
@@ -38,14 +39,21 @@ public class TokenManagementServiceImpl implements TokenManagementService {
      * @param expiresInSeconds expiration (in seconds) provided by Cognito
      */
     @Override
-    public void storeTokens(String username, String accessToken, String refreshToken, long expiresInSeconds) {
+    public void storeTokens(String sessionId, String username, String accessToken, String refreshToken, long expiresInSeconds) {
         log.debug("Storing token with key: {}", username);
         TokenHolder tokenHolder = new TokenHolder();
         tokenHolder.setAccessToken(accessToken);
         tokenHolder.setRefreshToken(refreshToken);
         tokenHolder.setExpiryTimestamp(Instant.now().getEpochSecond() + expiresInSeconds);
-        tokenCache.put(username, tokenHolder);
-        log.info("Token stored successfully with key: {}", username);
+        tokenHolder.setSessionId(sessionId);
+
+        usersSessionsTokenCache.asMap().compute(username, (key, existingSessionsMap) -> {
+            Map<String, TokenHolder> sessions = existingSessionsMap != null ? existingSessionsMap : new ConcurrentHashMap<>();
+            sessions.put(sessionId, tokenHolder);
+            return sessions;
+        });
+
+        log.info("Stored tokens for user: {}, session: {}", username, sessionId);
     }
 
     /**
@@ -55,7 +63,7 @@ public class TokenManagementServiceImpl implements TokenManagementService {
      * @return a new AuthenticationResponse containing fresh tokens
      */
     @Override
-    public AuthenticationResponse refreshTokens(String username, String refreshToken) {
+    public AuthenticationResponse refreshTokens(String sessionId, String username, String refreshToken) {
         try {
             AdminInitiateAuthResponse authResponse = cognitoIdentityProviderClient.adminInitiateAuth(
                     AdminInitiateAuthRequest.builder()
@@ -72,7 +80,7 @@ public class TokenManagementServiceImpl implements TokenManagementService {
             long expiresIn = authResponse.authenticationResult().expiresIn();
 
             // Update cache with the new tokens.
-            storeTokens(username, newAccessToken, newRefreshToken, expiresIn);
+            storeTokens(sessionId, username, newAccessToken, newRefreshToken, expiresIn);
 
             return new AuthenticationResponse(newAccessToken, newRefreshToken);
         } catch (Exception e) {
@@ -88,14 +96,13 @@ public class TokenManagementServiceImpl implements TokenManagementService {
      */
     @Override
     public TokenHolder getTokens(String username) {
-        log.debug("Retrieving token with key: {}", username);
-        TokenHolder tokenHolder = tokenCache.getIfPresent(username);
-        if (tokenHolder != null) {
-            log.info("Token retrieved successfully with key: {}", username);
-        } else {
-            log.warn("Token not found with key: {}", username);
+        Map<String, TokenHolder> sessions = usersSessionsTokenCache.getIfPresent(username);
+        if (sessions == null || sessions.isEmpty()) {
+            log.warn("No active sessions found for user: {}", username);
+            return null;
         }
-        return tokenHolder;
+        log.info("Retrieved tokens for user: {}", username);
+        return sessions.values().iterator().next(); // Return the first active session
     }
 
     /**
@@ -106,7 +113,22 @@ public class TokenManagementServiceImpl implements TokenManagementService {
     @Override
     public void invalidateTokens(String username) {
         log.debug("Invalidating token with key: {}", username);
-        tokenCache.invalidate(username);
+        usersSessionsTokenCache.invalidate(username);
         log.info("Token invalidated successfully with key: {}", username);
+    }
+
+    /**
+     * Invalidates the session for a given username.
+     *
+     * @param username the username associated with the session
+     * @param sessionId the session id
+     */
+    @Override
+    public void invalidateSession(String username, String sessionId) {
+        log.info("Invalidating session {} for user: {}", sessionId, username);
+        usersSessionsTokenCache.asMap().computeIfPresent(username, (key, sessions) -> {
+            sessions.remove(sessionId);
+            return sessions.isEmpty() ? null : sessions; // Remove user if no active sessions remain
+        });
     }
 }

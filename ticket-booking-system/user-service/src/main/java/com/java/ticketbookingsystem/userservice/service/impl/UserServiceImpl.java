@@ -4,7 +4,9 @@ import com.java.ticketbookingsystem.userservice.dto.*;
 import com.java.ticketbookingsystem.userservice.exception.TBSUserServiceException;
 import com.java.ticketbookingsystem.userservice.service.TokenManagementService;
 import com.java.ticketbookingsystem.userservice.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -74,6 +76,7 @@ public class UserServiceImpl implements UserService {
      * @throws TBSUserServiceException if an error occurs fetching data from Cognito.
      */
     @Override
+    @Cacheable(value = "userDetails", key = "#username")
     public UserDetails getUserDetails(String username) {
         log.info("Retrieving user details for username: {}", username);
 
@@ -113,7 +116,7 @@ public class UserServiceImpl implements UserService {
      * @throws TBSUserServiceException if no authenticated user is found or an error occurs.
      */
     @Override
-    public UserDetails getCurrentUser() {
+    public String getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated()) {
             log.error("No authenticated user found in SecurityContext");
@@ -121,7 +124,7 @@ public class UserServiceImpl implements UserService {
         }
         String username = authentication.getName();
         log.info("Current authenticated user: {}", username);
-        return getUserDetails(username);
+        return username;
     }
 
     /**
@@ -159,7 +162,7 @@ public class UserServiceImpl implements UserService {
      * @throws TBSUserServiceException if authentication fails.
      */
     @Override
-    public AuthenticationResponse signIn(AuthenticationRequest signInRequest) {
+    public AuthenticationResponse signIn(AuthenticationRequest signInRequest, String sessionId) {
         try {
             InitiateAuthResponse authResponse = cognitoClient.initiateAuth(r -> r
                     .authFlow(AuthFlowType.USER_PASSWORD_AUTH)
@@ -172,7 +175,7 @@ public class UserServiceImpl implements UserService {
             String refreshToken = authResponse.authenticationResult().refreshToken();
             long expiresIn = authResponse.authenticationResult().expiresIn();
 
-            tokenManagementService.storeTokens(signInRequest.getUsername(), accessToken, refreshToken, expiresIn);
+            tokenManagementService.storeTokens(sessionId, signInRequest.getUsername(), accessToken, refreshToken, expiresIn);
             log.info("User {} signed in successfully.", signInRequest.getUsername());
             return AuthenticationResponse.builder()
                     .token(accessToken)
