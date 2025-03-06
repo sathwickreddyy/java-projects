@@ -4,7 +4,6 @@ import com.java.ticketbookingsystem.userservice.dto.*;
 import com.java.ticketbookingsystem.userservice.exception.TBSUserServiceException;
 import com.java.ticketbookingsystem.userservice.service.TokenManagementService;
 import com.java.ticketbookingsystem.userservice.service.UserService;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.Authentication;
