@@ -1,5 +1,7 @@
 package com.java.ticketbookingsystem.userservice.security;
 
+import com.java.ticketbookingsystem.userservice.security.filters.AWSJwtAuthenticationFilter;
+import com.java.ticketbookingsystem.userservice.security.filters.FirebaseAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -15,15 +17,17 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final AWSJwtAuthenticationFilter AWSJwtAuthenticationFilter;
+    private final FirebaseAuthenticationFilter firebaseAuthenticationFilter;
 
     /**
      * Constructs the SecurityConfig with the JWT authentication filter.
      *
-     * @param jwtAuthenticationFilter the filter that validates JWT tokens from requests.
+     * @param AWSJwtAuthenticationFilter the filter that validates JWT tokens from requests.
      */
-    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
-        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+    public SecurityConfig(AWSJwtAuthenticationFilter AWSJwtAuthenticationFilter, FirebaseAuthenticationFilter firebaseAuthenticationFilter) {
+        this.AWSJwtAuthenticationFilter = AWSJwtAuthenticationFilter;
+        this.firebaseAuthenticationFilter = firebaseAuthenticationFilter;
     }
 
     /**
@@ -70,8 +74,8 @@ public class SecurityConfig {
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-                // Add the JWT authentication filter before the standard filter
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                // Add the Firebase JWT authentication filter before the standard filter
+                .addFilterBefore(firebaseAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

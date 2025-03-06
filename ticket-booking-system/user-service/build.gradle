@@ -18,9 +18,18 @@ repositories {
 }
 
 dependencies {
+    implementation 'ch.qos.logback:logback-classic' // No version specified
+    implementation 'org.slf4j:slf4j-api:2.0.12'
+
     // AWS SDK v2 (NOT v1)
     implementation 'software.amazon.awssdk:cognitoidentityprovider:2.17.0'
     implementation 'software.amazon.awssdk:sts:2.17.0'
+
+    // Firebase
+    implementation 'com.google.firebase:firebase-admin:9.2.0'
+    implementation 'org.slf4j:slf4j-api:2.0.12'
+    implementation 'org.springframework.security:spring-security-config:6.3.5'
+    implementation 'com.google.cloud:google-cloud-firestore:3.14.0'
 
     // Spring Boot
     implementation 'org.springframework.boot:spring-boot-starter-security'
@@ -43,4 +52,10 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.boot:spring-boot-dependencies:3.4.2"
+    }
 }

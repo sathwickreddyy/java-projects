@@ -9,13 +9,14 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import jakarta.validation.constraints.NotBlank;
 import java.util.Objects;
 
 /**
@@ -36,7 +37,7 @@ import java.util.Objects;
 @RequestMapping("/v1/users")
 @Slf4j
 @Validated
-public class AuthController {
+public class UserAuthController {
 
     private final UserService userService;
     private final TokenManagementService tokenManagementService;
@@ -48,41 +49,11 @@ public class AuthController {
      * @param tokenManagementService the service handling token management operations.
      * @throws IllegalArgumentException if userService is null.
      */
-    public AuthController(UserService userService, TokenManagementService tokenManagementService) {
+    public UserAuthController(@Qualifier("firebaseUserServiceImpl") UserService userService, TokenManagementService tokenManagementService) {
         this.userService = Objects.requireNonNull(userService, "UserService cannot be null");
         this.tokenManagementService = tokenManagementService;
         log.info("AuthController initialized with UserService implementation: {}",
                 userService.getClass().getSimpleName());
-    }
-
-    /**
-     * Retrieves detailed information about a specific user.
-     *
-     * @param username the unique identifier of the user to retrieve.
-     * @return ResponseEntity containing user details if found.
-     * @throws TBSUserServiceException if user is not found or a service error occurs.
-     */
-    @GetMapping("/{username}")
-    @PreAuthorize("hasRole('ADMIN')")
-    @Operation(
-            summary = "Get user details",
-            description = "Retrieves comprehensive information about a specific user",
-            tags = {"Admin"}
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "User details retrieved successfully"),
-            @ApiResponse(responseCode = "404", description = "User not found"),
-            @ApiResponse(responseCode = "403", description = "Access denied"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
-    })
-    public ResponseEntity<UserDetails> getUser(
-            @Parameter(description = "Username of the target user", required = true)
-            @PathVariable @NotBlank String username) {
-
-        log.info("Received request to fetch details for user: {}", username);
-        UserDetails userDetails = userService.getUserDetails(username);
-        log.debug("Retrieved user details for {}: {}", username, userDetails);
-        return ResponseEntity.ok(userDetails);
     }
 
     /**
@@ -153,7 +124,6 @@ public class AuthController {
      * <p>
      * This endpoint invalidates the current session/token.
      *
-     * @param token the JWT token from the Authorization header.
      * @return HTTP 204 (No Content) on successful sign out.
      */
     @Operation(
@@ -236,5 +206,36 @@ public class AuthController {
         response.setGender(currentUserDetails.getGender());
         response.setPhoneNumber(currentUserDetails.getPhoneNumber());
         return ResponseEntity.ok(response);
+    }
+
+    /**
+     * Registers a new user in the system
+     * @param registrationRequest user registration details
+     * @return authentication tokens
+     */
+    @Operation(
+            summary = "Register new user",
+            description = "Creates a new user account with default USER role",
+            tags = {"Authentication"}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "User registered successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid registration request"),
+            @ApiResponse(responseCode = "409", description = "User already exists"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+
+    @PostMapping("/signup")
+    public ResponseEntity<AuthenticationResponse> signUp(
+            @Parameter(description = "User registration details", required = true)
+            @Valid @RequestBody RegistrationRequest registrationRequest) {
+
+        try {
+            AuthenticationResponse response = userService.signUp(registrationRequest);
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        } catch (Exception e) {
+            log.error("Registration failed: {}", e.getMessage());
+            throw new TBSUserServiceException("User registration failed", e);
+        }
     }
 }

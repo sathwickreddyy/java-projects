@@ -1,4 +1,4 @@
-package com.java.ticketbookingsystem.userservice.security;
+package com.java.ticketbookingsystem.userservice.security.filters;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.Claim;
@@ -46,7 +46,7 @@ import java.util.stream.Collectors;
  */
 @Component
 @Slf4j
-public class JwtAuthenticationFilter extends OncePerRequestFilter {
+public class AWSJwtAuthenticationFilter extends OncePerRequestFilter {
     private static final String BEARER_PREFIX = "Bearer ";
     private static final String COGNITO_GROUPS_CLAIM = "cognito:groups";
 
@@ -57,7 +57,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
      * Constructs JWT authentication filter with Cognito validator
      * @param jwtValidator Custom validator for Cognito-specific JWT claims
      */
-    public JwtAuthenticationFilter(CognitoJWTValidator jwtValidator) {
+    public AWSJwtAuthenticationFilter(CognitoJWTValidator jwtValidator) {
         this.jwtDecoder = new CognitoJwtDecoder(jwtValidator);
         this.jwtCache = Caffeine.newBuilder()
                 .expireAfterWrite(5, TimeUnit.MINUTES)

@@ -2,9 +2,9 @@ package com.java.ticketbookingsystem.userservice.service;
 
 import com.java.ticketbookingsystem.userservice.dto.AuthenticationRequest;
 import com.java.ticketbookingsystem.userservice.dto.AuthenticationResponse;
+import com.java.ticketbookingsystem.userservice.dto.RegistrationRequest;
 import com.java.ticketbookingsystem.userservice.dto.UserDetails;
 import com.java.ticketbookingsystem.userservice.exception.TBSUserServiceException;
-import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * Interface defining the contract for user management operations.
@@ -14,20 +14,20 @@ public interface UserService {
     /**
      * Retrieves detailed user information from Cognito.
      *
-     * @param username The unique identifier of the user
+     * @param userId The unique identifier of the user
      * @return UserDetails object containing user information
      * @throws TBSUserServiceException if there's an error fetching user details
      */
-    UserDetails getUserDetails(String username);
+    UserDetails getUserDetails(String userId);
 
     /**
      * Updates the role of a specified user in Cognito.
      *
-     * @param username The unique identifier of the user
+     * @param userId The unique identifier of the user
      * @param role The new role to be assigned
      * @throws TBSUserServiceException if there's an error updating the user role
      */
-    void updateUserRole(String username, UserDetails.UserRole role);
+    void updateUserRole(String userId, UserDetails.UserRole role);
 
     /**
      * Authenticates a user by verifying their credentials.
@@ -53,5 +53,12 @@ public interface UserService {
      * @return UserDetails object representing the authenticated user
      */
     String getCurrentUser();
+
+    /**
+     * Registers a new user in Cloud.
+     * @param request RegistrationRequest
+     * @return AuthenticationResponse
+     */
+    AuthenticationResponse signUp(RegistrationRequest request);
 }
 

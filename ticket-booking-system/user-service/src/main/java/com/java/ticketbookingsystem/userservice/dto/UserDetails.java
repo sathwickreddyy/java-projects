@@ -25,7 +25,7 @@ public class UserDetails {
     public enum UserRole {
         ADMIN,
         USER,
-        THEATRE_OWNER,
+        OWNER,
     }
 }
 

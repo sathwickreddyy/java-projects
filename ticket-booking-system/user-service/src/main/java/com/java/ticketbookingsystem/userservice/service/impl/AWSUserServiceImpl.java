@@ -4,7 +4,6 @@ import com.java.ticketbookingsystem.userservice.dto.*;
 import com.java.ticketbookingsystem.userservice.exception.TBSUserServiceException;
 import com.java.ticketbookingsystem.userservice.service.TokenManagementService;
 import com.java.ticketbookingsystem.userservice.service.UserService;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.Authentication;
@@ -41,7 +40,7 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @Service
-public class UserServiceImpl implements UserService {
+public class AWSUserServiceImpl implements UserService {
 
     private final CognitoIdentityProviderClient cognitoClient;
     private final CognitoUserPoolDetails userPoolDetails;
@@ -55,9 +54,9 @@ public class UserServiceImpl implements UserService {
      * @param tokenManagementService service responsible for token storage/refresh.
      * @throws IllegalArgumentException if the cognitoClient is null.
      */
-    public UserServiceImpl(CognitoIdentityProviderClient cognitoClient,
-                           CognitoUserPoolDetails userPoolDetails,
-                           TokenManagementService tokenManagementService) {
+    public AWSUserServiceImpl(CognitoIdentityProviderClient cognitoClient,
+                              CognitoUserPoolDetails userPoolDetails,
+                              TokenManagementService tokenManagementService) {
         if (cognitoClient == null) {
             log.error("CognitoIdentityProviderClient cannot be null");
             throw new IllegalArgumentException("CognitoIdentityProviderClient is required");
@@ -125,6 +124,17 @@ public class UserServiceImpl implements UserService {
         String username = authentication.getName();
         log.info("Current authenticated user: {}", username);
         return username;
+    }
+
+    /**
+     * Registers a new user in Cloud.
+     *
+     * @param request RegistrationRequest
+     * @return AuthenticationResponse
+     */
+    @Override
+    public AuthenticationResponse signUp(RegistrationRequest request) {
+        return null;
     }
 
     /**
