@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -97,7 +98,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String bearerToken = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
             String token = bearerToken.substring(BEARER_PREFIX.length());
-            log.debug("Extracted JWT token from Authorization header");
+            log.info("Extracted JWT token from Authorization header");
             return token;
         }
         log.warn("No valid Authorization header found");
@@ -158,7 +159,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 groupsClaim.asList(String.class);
 
         log.debug("Extracted Cognito groups: {}", groups);
-        return groups.stream()
+        return Objects.isNull(groups) ? null: groups.stream()
                 .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
                 .collect(Collectors.toList());
     }

@@ -167,7 +167,7 @@ public class AuthController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @DeleteMapping("/signout")
-    public ResponseEntity<Void> signOut(@RequestHeader("Authorization") String token) {
+    public ResponseEntity<Void> signOut() {
         String currentUserName = userService.getCurrentUser();
         UserDetails currentUserDetails = userService.getUserDetails(currentUserName);
         userService.signOut(currentUserDetails.getUsername());

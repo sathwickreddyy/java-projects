@@ -83,7 +83,7 @@ public class CognitoJwtDecoder implements JwtDecoder {
      */
     @Override
     public Jwt decode(String token) throws JwtException {
-        log.debug("Starting JWT decoding process for token: {}...", abbreviateToken(token));
+        log.info("Starting JWT decoding process for token: {}...", abbreviateToken(token));
         try {
             DecodedJWT decoded = validator.validate(token);
             log.info("JWT successfully validated for subject: {}", decoded.getSubject());

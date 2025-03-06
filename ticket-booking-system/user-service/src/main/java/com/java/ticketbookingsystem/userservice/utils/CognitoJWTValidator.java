@@ -90,9 +90,10 @@ public class CognitoJWTValidator {
      * JWKS Verification: Validates token signature against current keys
      */
     private JWTVerifier buildVerifier(Algorithm algorithm) {
+        log.info("Building JWT verifier with security requirements");
         return JWT.require(algorithm)
                 .withIssuer(issuerUrl)
-                .withAudience(clientId)
+//                .withAudience(clientId)
                 .withClaim("token_use", this::validateTokenUse)
                 .build();
     }
@@ -101,6 +102,7 @@ public class CognitoJWTValidator {
      * Validates Cognito-specific token_use claim
      */
     private boolean validateTokenUse(Claim claim, DecodedJWT jwt) {
+        log.info("Validating token_use claim for token");
         String tokenUse = claim.asString();
         boolean isValid = "access".equals(tokenUse) || "id".equals(tokenUse);
 
