@@ -14,11 +14,11 @@ public interface UserService {
     /**
      * Retrieves detailed user information from Cognito.
      *
-     * @param username The unique identifier of the user
+     * @param userId The unique identifier of the user
      * @return UserDetails object containing user information
      * @throws TBSUserServiceException if there's an error fetching user details
      */
-    UserDetails getUserDetails(String username);
+    UserDetails getUserDetails(String userId);
 
     /**
      * Updates the role of a specified user in Cognito.

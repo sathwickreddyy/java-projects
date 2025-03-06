@@ -221,10 +221,11 @@ public class AuthController {
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    @GetMapping("/getCurrentUser")
+    @GetMapping("/me")
     public ResponseEntity<UserDetailsResponse> getCurrentUser() {
-        String currentUserName = userService.getCurrentUser();
-        UserDetails currentUserDetails = userService.getUserDetails(currentUserName);
+        log.info("Received request to fetch current user details");
+        String currentUserId = userService.getCurrentUser();
+        UserDetails currentUserDetails = userService.getUserDetails(currentUserId);
         if (currentUserDetails == null) {
             throw new TBSUserServiceException("No current user found");
         }

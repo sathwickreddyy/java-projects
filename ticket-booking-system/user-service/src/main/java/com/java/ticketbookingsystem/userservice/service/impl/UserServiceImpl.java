@@ -71,36 +71,36 @@ public class UserServiceImpl implements UserService {
     /**
      * Retrieves the detailed profile information for a user from Cognito.
      *
-     * @param username the unique identifier for the user.
+     * @param userId the unique identifier for the user.
      * @return a UserDetails object containing attributes like email, name, phone, gender, and authorities.
      * @throws TBSUserServiceException if an error occurs fetching data from Cognito.
      */
     @Override
-    @Cacheable(value = "userDetails", key = "#username")
-    public UserDetails getUserDetails(String username) {
-        log.info("Retrieving user details for username: {}", username);
+    @Cacheable(value = "userDetails", key = "#userId")
+    public UserDetails getUserDetails(String userId) {
+        log.info("Retrieving user details for username: {}", userId);
 
         try {
             // Fetch user profile from Cognito.
             AdminGetUserResponse response = cognitoClient.adminGetUser(r -> r
                     .userPoolId(userPoolDetails.getUserPoolId())
-                    .username(username));
-            log.debug("Successfully retrieved profile for username: {}", username);
+                    .username(userId));
+            log.debug("Successfully retrieved profile for username: {}", userId);
 
             // Build and return a complete UserDetails instance.
             UserDetails userDetails = UserDetails.builder()
-                    .username(username)
+                    .username(userId)
                     .email(getAttribute(response, "email"))
                     .name(getAttribute(response, "name"))
                     .phoneNumber(getAttribute(response, "phone_number"))
                     .gender(getAttribute(response, "gender"))
-                    .authorities(getUserRoles(username))
+                    .authorities(getUserRoles(userId))
                     .build();
 
-            log.info("Compiled user details for username: {}", username);
+            log.info("Compiled user details for username: {}", userId);
             return userDetails;
         } catch (CognitoIdentityProviderException e) {
-            log.error("Error retrieving user details for {}: {}", username, e.getMessage());
+            log.error("Error retrieving user details for {}: {}", userId, e.getMessage());
             throw new TBSUserServiceException("Error retrieving user details from Cognito", e);
         }
     }
