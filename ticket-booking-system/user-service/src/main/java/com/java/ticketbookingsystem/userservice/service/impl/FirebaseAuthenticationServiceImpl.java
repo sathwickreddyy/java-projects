@@ -107,7 +107,7 @@ public class FirebaseAuthenticationServiceImpl implements AuthenticationService 
         } catch (
                 FirebaseAuthException e) {
             log.error("Token refresh failed: {}", e.getMessage());
-            throw new TBSUserServiceException("Token refresh failed", e);
+            throw new TBSUserServiceException("Token refresh failed, please signin again - " + e.getMessage());
         }
     }
 }

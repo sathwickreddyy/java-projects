@@ -50,7 +50,6 @@ public class FirebaseAuthenticationFilter extends OncePerRequestFilter {
             }
         }
         filterChain.doFilter(request, response);
-        log.info("User authenticated: {}", SecurityContextHolder.getContext().getAuthentication());
     }
 
     private Collection<? extends GrantedAuthority> extractAuthorities(FirebaseToken token) {

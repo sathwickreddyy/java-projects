@@ -105,8 +105,7 @@ public class UserAuthController {
     @DeleteMapping("/signout")
     public ResponseEntity<Void> signOut() {
         String currentUserId = userService.getCurrentUser();
-        UserDetails currentUserDetails = userService.getUserDetails(currentUserId);
-        userService.signOut(currentUserDetails.getUsername());
+        userService.signOut(currentUserId);
         return ResponseEntity.noContent().build();
     }
 

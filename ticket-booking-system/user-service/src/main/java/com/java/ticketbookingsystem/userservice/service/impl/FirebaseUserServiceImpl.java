@@ -140,7 +140,7 @@ public class FirebaseUserServiceImpl implements UserService {
         try {
             log.info("Signing out user: {}", userId);
             firebaseAuth.revokeRefreshTokens(userId);
-            log.debug("Successfully revoked tokens for user: {}", userId);
+            log.info("Successfully revoked tokens for user: {}", userId);
         } catch (FirebaseAuthException e) {
             log.error("Failed to sign out user: {} - {}", userId, e.getMessage());
             throw new TBSUserServiceException("Sign out failed", e);
