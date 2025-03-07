@@ -129,7 +129,7 @@ public class UserAuthController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/me")
-    public ResponseEntity<UserDetailsResponse> getCurrentUser() {
+    public ResponseEntity<UserDetailsResponse> currentUser() {
         log.info("Retrieving current user details");
         String currentUserId = userService.getCurrentUser();
         log.info("Current user ID: {}", currentUserId);

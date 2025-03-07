@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="97d30be4-257c-4abd-b7a6-4797b978bba4" name="Changes" comment="">
+    <list default="true" id="97d30be4-257c-4abd-b7a6-4797b978bba4" name="Changes" comment="Adding fetch token mapping">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/java/ticketbookingsystem/userservice/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/com/java/ticketbookingsystem/userservice/controller/AuthController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/java/ticketbookingsystem/userservice/controller/UserAuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/com/java/ticketbookingsystem/userservice/controller/UserAuthController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -108,7 +108,10 @@
     <ConfirmationsSetting value="2" id="Add" />
   </component>
   <component name="ProjectViewState">
+    <option name="autoscrollFromSource" value="true" />
+    <option name="autoscrollToSource" value="true" />
     <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="openDirectoriesWithSingleClick" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
@@ -154,6 +157,9 @@
       <recent name="$PROJECT_DIR$/search-service" />
       <recent name="$PROJECT_DIR$/ticket-service" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/user-service/src/main/resources" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="configurationTypes">
@@ -178,7 +184,7 @@
               <option value="SearchServiceApplication (2)" />
               <option value="TicketServiceApplication (1)" />
               <option value="TicketServiceApplication (2)" />
-              <option value="UserServiceApplication (1)" />
+              <option value="UserServiceApplication" />
               <option value="UserServiceApplication (2)" />
             </set>
           </value>
@@ -186,7 +192,7 @@
       </map>
     </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.UserServiceApplication (1)">
+  <component name="RunManager" selected="Spring Boot.UserServiceApplication">
     <configuration default="true" type="AZURE_FUNCTION_SUPPORT" factoryName="Run Functions">
       <option name="appName" />
       <option name="appServicePlanName" />
@@ -389,13 +395,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="UserServiceApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
-      <module name="ticket-booking-system.user-service.main" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="com.java.ticketbookingsystem.userservice.UserServiceApplication" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="UserServiceApplication (2)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
       <module name="user-service.main" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.java.ticketbookingsystem.userservice.UserServiceApplication" />
@@ -422,6 +421,19 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="UserServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="ticket-booking-system.user-service.main" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.java.ticketbookingsystem.userservice.UserServiceApplication" />
+      <option name="VM_PARAMETERS" value="-DFIREBASE_API_KEY=AIzaSyBMQb1vAFIthTjRtyTjLkOrNN3W_leFGGs" />
+      <extension name="software.aws.toolkits.jetbrains.core.execution.JavaAwsConnectionExtension">
+        <option name="credential" />
+        <option name="region" />
+        <option name="useCurrentConnection" value="false" />
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <list>
       <item itemvalue="Gradle.ticket-booking-system:user-service [clean]" />
       <item itemvalue="Gradle.user-service [bootRun]" />
@@ -431,7 +443,7 @@
       <item itemvalue="Spring Boot.PaymentServiceApplication (2)" />
       <item itemvalue="Spring Boot.SearchServiceApplication (2)" />
       <item itemvalue="Spring Boot.TicketServiceApplication (2)" />
-      <item itemvalue="Spring Boot.UserServiceApplication (1)" />
+      <item itemvalue="Spring Boot.UserServiceApplication" />
       <item itemvalue="Spring Boot.MovieManagementServiceApplication" />
       <item itemvalue="Spring Boot.MovieManagementServiceApplication (1)" />
       <item itemvalue="Spring Boot.PaymentServiceApplication" />
@@ -440,7 +452,6 @@
       <item itemvalue="Spring Boot.SearchServiceApplication (1)" />
       <item itemvalue="Spring Boot.TicketServiceApplication" />
       <item itemvalue="Spring Boot.TicketServiceApplication (1)" />
-      <item itemvalue="Spring Boot.UserServiceApplication" />
       <item itemvalue="Spring Boot.UserServiceApplication (2)" />
     </list>
     <recent_temporary>
@@ -456,14 +467,14 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-125ca727e0f0-intellij.indexing.shared.core-IU-243.23654.189" />
-        <option value="bundled-js-predefined-d6986cc7102b-822845ee3bb5-JavaScript-IU-243.23654.189" />
+        <option value="bundled-jdk-9823dce3aa75-125ca727e0f0-intellij.indexing.shared.core-IU-243.24978.46" />
+        <option value="bundled-js-predefined-d6986cc7102b-76f8388c3a79-JavaScript-IU-243.24978.46" />
       </set>
     </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="StructureViewState">
-    <option name="selectedTab" value="Logical" />
+    <option name="selectedTab" value="Physical" />
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -477,6 +488,9 @@
       <workItem from="1738751503021" duration="2731000" />
       <workItem from="1738755231423" duration="718000" />
       <workItem from="1738755964763" duration="42887000" />
+      <workItem from="1740072229966" duration="5027000" />
+      <workItem from="1740219760653" duration="13868000" />
+      <workItem from="1741293982539" duration="14135000" />
     </task>
     <servers />
   </component>
@@ -486,6 +500,21 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Adding fetch token mapping" />
     <option name="LAST_COMMIT_MESSAGE" value="Adding fetch token mapping" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/user-service/src/main/java/com/java/ticketbookingsystem/userservice/service/AuthenticationService.java</url>
+          <line>7</line>
+          <properties class="com.java.ticketbookingsystem.userservice.service.AuthenticationService" method="signIn">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="20" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
