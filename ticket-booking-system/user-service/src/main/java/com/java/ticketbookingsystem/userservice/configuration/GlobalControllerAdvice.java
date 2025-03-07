@@ -32,7 +32,7 @@ import java.time.LocalDateTime;
  */
 @Slf4j
 @RestControllerAdvice
-public class ControllerAdvice extends ResponseEntityExceptionHandler {
+public class GlobalControllerAdvice extends ResponseEntityExceptionHandler {
 
     /**
      * Handles service-specific exceptions thrown by the user service.

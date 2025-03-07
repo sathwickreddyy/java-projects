@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="97d30be4-257c-4abd-b7a6-4797b978bba4" name="Changes" comment="Adding fetch token mapping">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/java/ticketbookingsystem/userservice/controller/UserAuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/com/java/ticketbookingsystem/userservice/controller/UserAuthController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -490,7 +489,7 @@
       <workItem from="1738755964763" duration="42887000" />
       <workItem from="1740072229966" duration="5027000" />
       <workItem from="1740219760653" duration="13868000" />
-      <workItem from="1741293982539" duration="14135000" />
+      <workItem from="1741293982539" duration="14712000" />
     </task>
     <servers />
   </component>
