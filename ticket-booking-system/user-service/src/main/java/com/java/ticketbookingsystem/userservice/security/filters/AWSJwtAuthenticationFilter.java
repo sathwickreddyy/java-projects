@@ -34,7 +34,7 @@
 //import java.util.stream.Collectors;
 //
 //
-///**
+/// **
 // * JWT Authentication Filter that handles Cognito token validation and authentication context setup.
 // * <p>
 // * This filter intercepts incoming requests, extracts JWT tokens from the Authorization header,

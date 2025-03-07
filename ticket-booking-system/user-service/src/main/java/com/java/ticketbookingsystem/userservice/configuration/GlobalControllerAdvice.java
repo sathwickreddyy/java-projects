@@ -21,12 +21,12 @@ import java.time.LocalDateTime;
  * Global exception handler for the Ticket Booking System's user service.
  * This class provides centralized exception handling across all controllers
  * in the application, ensuring consistent error responses and logging.
- *
+ * <p>
  * The handler manages various types of exceptions:
  * - Service-specific exceptions (TBSUserServiceException)
  * - Security exceptions (Authentication and Authorization)
  * - Validation exceptions (Method argument validation)
- *
+ * <p>
  * Each exception is logged appropriately and transformed into a standardized
  * error response format for the client.
  */
@@ -87,9 +87,9 @@ public class GlobalControllerAdvice extends ResponseEntityExceptionHandler {
      * validation constraints. This method overrides the default Spring validation
      * handling to provide custom error responses.
      *
-     * @param ex The validation exception containing binding errors
+     * @param ex      The validation exception containing binding errors
      * @param headers The headers to be written to the response
-     * @param status The selected response status
+     * @param status  The selected response status
      * @param request The current request
      * @return ResponseEntity containing validation error details
      */

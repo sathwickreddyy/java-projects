@@ -3,6 +3,7 @@ package com.java.ticketbookingsystem.userservice.dto;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
+
 import java.util.Collection;
 
 /**
@@ -18,6 +19,7 @@ public class UserDetails {
     private String phoneNumber;
     private String gender;
     private Collection<? extends GrantedAuthority> authorities;
+
     /**
      * Enum defining the possible user roles in the system.
      * Used for role-based access control and user management.

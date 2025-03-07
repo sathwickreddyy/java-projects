@@ -129,7 +129,8 @@ public class CognitoJwtDecoder implements JwtDecoder {
             );
             log.trace("Decoded JWT header JSON: {}", headerJson);
             // Use a TypeReference to obtain a type-safe Map<String, Object>
-            Map<String, Object> headers = objectMapper.readValue(headerJson, new TypeReference<Map<String, Object>>() {});
+            Map<String, Object> headers = objectMapper.readValue(headerJson, new TypeReference<Map<String, Object>>() {
+            });
             log.debug("Successfully parsed {} header claims", headers.size());
             return headers;
         } catch (IOException ex) {

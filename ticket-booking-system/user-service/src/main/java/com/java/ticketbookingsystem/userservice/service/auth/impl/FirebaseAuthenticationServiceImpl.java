@@ -5,13 +5,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
 import com.google.firebase.auth.UserRecord;
-import com.java.ticketbookingsystem.userservice.dto.AuthenticationRequest;
-import com.java.ticketbookingsystem.userservice.dto.AuthenticationResponse;
-import com.java.ticketbookingsystem.userservice.dto.RegistrationRequest;
-import com.java.ticketbookingsystem.userservice.dto.TokenResponse;
+import com.java.ticketbookingsystem.userservice.dto.*;
 import com.java.ticketbookingsystem.userservice.exception.TBSUserServiceException;
 import com.java.ticketbookingsystem.userservice.service.auth.AuthenticationService;
+import com.java.ticketbookingsystem.userservice.service.tokens.TokenManagementService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -25,16 +24,21 @@ import java.util.Objects;
 @Service("firebaseAuthenticationService")
 public class FirebaseAuthenticationServiceImpl implements AuthenticationService {
 
-    @Value("${firebase.api.key}")
-    private String firebaseApiKey;
     private final Firestore firestore;
     private final FirebaseAuth firebaseAuth;
     private final RestTemplate restTemplate;
+    private final TokenManagementService tokenManagementService;
+    @Value("${firebase.api.key}")
+    private String firebaseApiKey;
 
-    public FirebaseAuthenticationServiceImpl(Firestore firestore, FirebaseAuth firebaseAuth, RestTemplate restTemplate) {
+
+    public FirebaseAuthenticationServiceImpl(Firestore firestore, FirebaseAuth firebaseAuth, RestTemplate restTemplate,
+                                             @Qualifier("firebaseTokenManagementService")
+                                             TokenManagementService tokenManagementService) {
         this.firestore = firestore;
         this.firebaseAuth = firebaseAuth;
         this.restTemplate = restTemplate;
+        this.tokenManagementService = tokenManagementService;
     }
 
     /**
@@ -57,7 +61,8 @@ public class FirebaseAuthenticationServiceImpl implements AuthenticationService 
      * - Firebase->>Client: ID Token + Refresh Token
      * - Client->>Backend: API Requests with ID Token
      * - Backend->>Firebase: Verify ID Token
-     *</pre>
+     * </pre>
+     *
      * @param customToken Sign-in credentials Custom Token
      * @return a JSON response containing access and refresh tokens
      */
@@ -126,7 +131,7 @@ public class FirebaseAuthenticationServiceImpl implements AuthenticationService 
             return exchangeCustomTokenForIdToken(customToken);
         } catch (Exception e) {
             log.error("Signup failed: {}", e.getMessage());
-            throw new TBSUserServiceException("User registration failed "+e.getMessage());
+            throw new TBSUserServiceException("User registration failed " + e.getMessage());
         }
     }
 
@@ -145,7 +150,7 @@ public class FirebaseAuthenticationServiceImpl implements AuthenticationService 
     @Override
     public AuthenticationResponse signIn(AuthenticationRequest signInRequest, String sessionId) {
         try {
-            log.info("Sign-in attempt for username/email: {}", signInRequest.getUsername()+" "+signInRequest.getEmail());
+            log.info("Sign-in attempt for username/email: {}", signInRequest.getUsername() + " " + signInRequest.getEmail());
 
             UserRecord userRecord = firebaseAuth.getUserByEmail(signInRequest.getEmail());
             // In production, implement proper password verification flow
@@ -154,7 +159,10 @@ public class FirebaseAuthenticationServiceImpl implements AuthenticationService 
             String customToken = firebaseAuth.createCustomToken(userRecord.getUid());
 
             log.info("Successful sign-in for user: {}", userRecord.getUid());
-            return exchangeCustomTokenForIdToken(customToken);
+            AuthenticationResponse response = exchangeCustomTokenForIdToken(customToken);
+            tokenManagementService.storeTokens(sessionId, userRecord.getUid(), response.getToken(),
+                    response.getRefreshToken(), 3600L);
+            return response;
         } catch (FirebaseAuthException e) {
             log.error("Authentication failed for username: {} - {}",
                     signInRequest.getUsername(), e.getMessage());
@@ -164,11 +172,13 @@ public class FirebaseAuthenticationServiceImpl implements AuthenticationService 
 
     /**
      * Refreshes a user's authentication token.
+     *
      * @param expiredToken refresh token
+     * @param sessionId    The session ID
      * @return TokenResponse
      */
     @Override
-    public TokenResponse refreshToken(String expiredToken) {
+    public TokenResponse refreshToken(String expiredToken, String sessionId) {
         try {
             // Verify token even if expired
             FirebaseToken decodedToken = firebaseAuth.verifyIdToken(expiredToken, true);
@@ -179,9 +189,14 @@ public class FirebaseAuthenticationServiceImpl implements AuthenticationService 
             // Generate new custom token
             String newToken = firebaseAuth.createCustomToken(user.getUid());
             log.info("Exchanging new custom token for Id Token Post Refresh");
-            return new TokenResponse(exchangeCustomTokenForIdToken(newToken).getToken());
-        } catch (
-                FirebaseAuthException e) {
+
+            // Update tokens in the cache
+            AuthenticationResponse response = exchangeCustomTokenForIdToken(newToken);
+            tokenManagementService.storeTokens(sessionId, user.getUid(), response.getToken(),
+                    response.getRefreshToken(), 3600L);
+
+            return new TokenResponse(response.getToken());
+        } catch (FirebaseAuthException e) {
             log.error("Token refresh failed: {}", e.getMessage());
             throw new TBSUserServiceException("Token refresh failed, please signin again - " + e.getMessage());
         }
@@ -198,6 +213,7 @@ public class FirebaseAuthenticationServiceImpl implements AuthenticationService 
         try {
             log.info("Signing out user: {}", userId);
             firebaseAuth.revokeRefreshTokens(userId);
+            tokenManagementService.invalidateTokens(userId);
             log.info("Successfully revoked tokens for user: {}", userId);
         } catch (FirebaseAuthException e) {
             log.error("Failed to sign out user: {} - {}", userId, e.getMessage());

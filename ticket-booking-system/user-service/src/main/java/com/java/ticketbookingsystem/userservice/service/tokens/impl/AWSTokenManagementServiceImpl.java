@@ -15,6 +15,7 @@ import software.amazon.awssdk.services.cognitoidentityprovider.model.AuthFlowTyp
 
 import java.time.Instant;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
@@ -33,9 +34,10 @@ public class AWSTokenManagementServiceImpl implements TokenManagementService {
 
     /**
      * Stores the tokens for the specified username.
-     * @param username the Cognito username
-     * @param accessToken the access token
-     * @param refreshToken the refresh token
+     *
+     * @param username         the Cognito username
+     * @param accessToken      the access token
+     * @param refreshToken     the refresh token
      * @param expiresInSeconds expiration (in seconds) provided by Cognito
      */
     @Override
@@ -57,52 +59,20 @@ public class AWSTokenManagementServiceImpl implements TokenManagementService {
     }
 
     /**
-     * Refreshes tokens by calling Cognito’s REFRESH_TOKEN_AUTH flow.
-     * @param username the username whose token is to be refreshed
-     * @param refreshToken the refresh token (from request)
-     * @return a new AuthenticationResponse containing fresh tokens
-     */
-    @Override
-    public AuthenticationResponse refreshTokens(String sessionId, String username, String refreshToken) {
-        try {
-            AdminInitiateAuthResponse authResponse = cognitoIdentityProviderClient.adminInitiateAuth(
-                    AdminInitiateAuthRequest.builder()
-                            .userPoolId(cognitoUserPoolDetails.getUserPoolId())
-                            .clientId(cognitoUserPoolDetails.getClientId())
-                            .authFlow(AuthFlowType.REFRESH_TOKEN_AUTH)
-                            .authParameters(Map.of("REFRESH_TOKEN", refreshToken))
-                            .build()
-            );
-            String newAccessToken = authResponse.authenticationResult().accessToken();
-            // Cognito may or may not return a new refresh token; if not, reuse the existing one.
-            String newRefreshToken = authResponse.authenticationResult().refreshToken() != null ?
-                    authResponse.authenticationResult().refreshToken() : refreshToken;
-            long expiresIn = authResponse.authenticationResult().expiresIn();
-
-            // Update cache with the new tokens.
-            storeTokens(sessionId, username, newAccessToken, newRefreshToken, expiresIn);
-
-            return new AuthenticationResponse(newAccessToken, newRefreshToken);
-        } catch (Exception e) {
-            log.error("Failed to refresh token", e);
-            throw new TBSUserServiceException("Failed to refresh token", e);
-        }
-    }
-
-    /**
      * Retrieves the tokens for a given username.
      *
      * @param username the username associated with the tokens
      */
     @Override
-    public TokenHolder getTokens(String username) {
+    public Optional<TokenHolder> getTokens(String username, String sessionId) {
         Map<String, TokenHolder> sessions = usersSessionsTokenCache.getIfPresent(username);
         if (sessions == null || sessions.isEmpty()) {
             log.warn("No active sessions found for user: {}", username);
             return null;
         }
         log.info("Retrieved tokens for user: {}", username);
-        return sessions.values().iterator().next(); // Return the first active session
+//        return   sessions.values().iterator().next(); // Return the first active session
+        return Optional.ofNullable(sessions.get(sessionId));
     }
 
     /**
@@ -120,7 +90,7 @@ public class AWSTokenManagementServiceImpl implements TokenManagementService {
     /**
      * Invalidates the session for a given username.
      *
-     * @param username the username associated with the session
+     * @param username  the username associated with the session
      * @param sessionId the session id
      */
     @Override

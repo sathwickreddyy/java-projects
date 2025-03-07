@@ -16,7 +16,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableMethodSecurity
 public class SecurityConfig {
 
-//    private final AWSJwtAuthenticationFilter AWSJwtAuthenticationFilter;
+    //    private final AWSJwtAuthenticationFilter AWSJwtAuthenticationFilter;
     private final FirebaseAuthenticationFilter firebaseAuthenticationFilter;
 
     public SecurityConfig(FirebaseAuthenticationFilter firebaseAuthenticationFilter) {
@@ -25,7 +25,7 @@ public class SecurityConfig {
 
     /**
      * Configures the security filter chain.
-     *
+     * <p>
      * The config now permits /v1/users/signin, /v1/users/refresh, and /v1/users/token to match the public endpoints in AuthController.
      * <p>
      * The configuration performs the following:

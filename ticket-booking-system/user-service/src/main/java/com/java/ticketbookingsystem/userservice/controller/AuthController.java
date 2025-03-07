@@ -45,7 +45,7 @@ public class AuthController {
     /**
      * Constructs a new AuthController with required dependencies.
      *
-     * @param userService            the service layer component handling user operations.
+     * @param userService the service layer component handling user operations.
      * @throws IllegalArgumentException if userService is null.
      */
     public AuthController(@Qualifier("firebaseUserService") UserService userService,
@@ -150,6 +150,7 @@ public class AuthController {
 
     /**
      * Registers a new user in the system
+     *
      * @param registrationRequest user registration details
      * @return authentication tokens
      */

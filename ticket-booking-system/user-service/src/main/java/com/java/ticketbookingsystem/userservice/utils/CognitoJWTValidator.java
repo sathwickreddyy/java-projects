@@ -41,8 +41,9 @@ public class CognitoJWTValidator {
 
     /**
      * Constructs validator using Cognito metadata
-     * @param clientId Application client ID from Cognito
-     * @param region AWS region (e.g., us-east-1)
+     *
+     * @param clientId   Application client ID from Cognito
+     * @param region     AWS region (e.g., us-east-1)
      * @param userPoolId Cognito user pool ID
      * @throws MalformedURLException if JWKS URL construction fails
      */
@@ -59,6 +60,7 @@ public class CognitoJWTValidator {
 
     /**
      * Validates and decodes JWT token with comprehensive checks
+     *
      * @param token Raw JWT token from Authorization header
      * @return Decoded JWT with verified claims
      * @throws JWTVerificationException for any validation failure

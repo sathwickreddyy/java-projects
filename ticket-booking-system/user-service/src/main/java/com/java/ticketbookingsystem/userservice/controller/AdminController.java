@@ -58,8 +58,9 @@ public class AdminController {
 
     /**
      * Updates the role of a specified user
+     *
      * @param userId Target user ID
-     * @param role New role to assign
+     * @param role   New role to assign
      * @return HTTP 204 on success
      */
     @Operation(

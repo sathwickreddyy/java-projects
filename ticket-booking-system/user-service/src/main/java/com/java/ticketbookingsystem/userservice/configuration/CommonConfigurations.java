@@ -43,14 +43,12 @@ public class CommonConfigurations {
     }
 
     @Bean
-    public CognitoIdentityProviderClient cognitoIdentityProviderClient()
-    {
+    public CognitoIdentityProviderClient cognitoIdentityProviderClient() {
         return CognitoIdentityProviderClient.builder().region(Region.of(region)).build();
     }
 
     @Bean
-    public Cache<String, Map<String, TokenHolder>> getTokenCache()
-    {
+    public Cache<String, Map<String, TokenHolder>> getTokenCache() {
         // Tokens are cached for 30 minutes; production systems may use Redis or a DB.
         return Caffeine.newBuilder()
                 .expireAfterWrite(30, TimeUnit.MINUTES)
@@ -59,8 +57,7 @@ public class CommonConfigurations {
     }
 
     @Bean
-    public CognitoUserPoolDetails getCognitoUserPoolDetails()
-    {
+    public CognitoUserPoolDetails getCognitoUserPoolDetails() {
         CognitoUserPoolDetails cognitoUserPoolDetails = new CognitoUserPoolDetails(userPoolId, clientId, region);
         cognitoUserPoolDetails.setUserRoleAttribute(userRoleAttribute);
         return cognitoUserPoolDetails;

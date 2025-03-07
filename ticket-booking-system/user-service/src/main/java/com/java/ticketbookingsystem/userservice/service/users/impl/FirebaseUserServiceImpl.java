@@ -69,8 +69,8 @@ public class FirebaseUserServiceImpl implements UserService {
     /**
      * Updates the role of a specified user in Cognito.
      *
-     * @param uid The unique identifier of the user
-     * @param role     The new role to be assigned
+     * @param uid  The unique identifier of the user
+     * @param role The new role to be assigned
      * @throws TBSUserServiceException if there's an error updating the user role
      */
     @Override

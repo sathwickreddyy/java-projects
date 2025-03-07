@@ -1,13 +1,13 @@
 package com.java.ticketbookingsystem.userservice.service.tokens.impl;
 
 import com.github.benmanes.caffeine.cache.Cache;
-import com.java.ticketbookingsystem.userservice.dto.AuthenticationResponse;
 import com.java.ticketbookingsystem.userservice.dto.TokenHolder;
 import com.java.ticketbookingsystem.userservice.service.tokens.TokenManagementService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
@@ -47,25 +47,17 @@ public class FirebaseTokenManagementServiceImpl implements TokenManagementServic
     }
 
     /**
-     * Refreshes the tokens for a given userId using the provided refresh token.
-     *
-     * @param sessionId    The session ID associated with the tokens.
-     * @param userId       The userId associated with the tokens.
-     * @param refreshToken The refresh token to use for refreshing.
-     */
-    @Override
-    public AuthenticationResponse refreshTokens(String sessionId, String userId, String refreshToken) {
-        return null;
-    }
-
-    /**
      * Retrieves the tokens for a given userId.
      *
      * @param userId the userId associated with the tokens
+     * @param sessionId the sessionId associated with the tokens
+     *
+     * @return TokenHolder
      */
     @Override
-    public TokenHolder getTokens(String userId) {
-        return null;
+    public Optional<TokenHolder> getTokens(String userId, String sessionId) {
+        Map<String, TokenHolder> sessionsMap = usersSessionsTokenCache.getIfPresent(userId);
+        return sessionsMap != null ? Optional.ofNullable(sessionsMap.get(sessionId)) : Optional.empty();
     }
 
     /**
@@ -75,7 +67,8 @@ public class FirebaseTokenManagementServiceImpl implements TokenManagementServic
      */
     @Override
     public void invalidateTokens(String userId) {
-
+        usersSessionsTokenCache.invalidate(userId);
+        log.info("Invalidated tokens for user: {}", userId);
     }
 
     /**
@@ -86,6 +79,6 @@ public class FirebaseTokenManagementServiceImpl implements TokenManagementServic
      */
     @Override
     public void invalidateSession(String userId, String sessionId) {
-
+        // TODO
     }
 }

@@ -21,7 +21,7 @@ public interface UserService {
      * Updates the role of a specified user in Cognito.
      *
      * @param userId The unique identifier of the user
-     * @param role The new role to be assigned
+     * @param role   The new role to be assigned
      * @throws TBSUserServiceException if there's an error updating the user role
      */
     void updateUserRole(String userId, UserDetails.UserRole role);

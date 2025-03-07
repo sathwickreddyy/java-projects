@@ -9,6 +9,7 @@ import com.java.ticketbookingsystem.userservice.exception.TBSUserServiceExceptio
 public interface AuthenticationService {
     /**
      * Registers a new user in Cloud.
+     *
      * @param request RegistrationRequest
      * @return AuthenticationResponse
      */
@@ -18,7 +19,7 @@ public interface AuthenticationService {
      * Authenticates a user by verifying their credentials.
      *
      * @param signInRequest The authentication request containing username and password
-     * @param sessionId The session ID
+     * @param sessionId     The session ID
      * @return AuthenticationResponse containing token and refresh token
      * @throws TBSUserServiceException if authentication fails
      */
@@ -26,10 +27,12 @@ public interface AuthenticationService {
 
     /**
      * Refreshes a user's authentication token.
+     *
      * @param token refresh token
+     * @param sessionId session id
      * @return TokenResponse
      */
-    TokenResponse refreshToken(String token);
+    TokenResponse refreshToken(String token, String sessionId);
 
     /**
      * Signs out a user by revoking their refresh token.

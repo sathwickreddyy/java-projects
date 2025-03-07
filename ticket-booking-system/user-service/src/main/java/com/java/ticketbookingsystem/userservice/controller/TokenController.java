@@ -72,9 +72,9 @@ public class TokenController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @PostMapping("/refresh-token")
-    public ResponseEntity<TokenResponse> refreshToken(@RequestHeader("Authorization") String authHeader) {
+    public ResponseEntity<TokenResponse> refreshToken(@RequestHeader("Authorization") String authHeader, HttpServletRequest request) {
         log.info("Refreshing token");
         String expiredToken = authHeader.substring(7);
-        return ResponseEntity.ok(authenticationService.refreshToken(expiredToken));
+        return ResponseEntity.ok(authenticationService.refreshToken(expiredToken, request.getSession().getId()));
     }
 }

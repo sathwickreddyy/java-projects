@@ -1,6 +1,7 @@
 package com.java.ticketbookingsystem.userservice.service.users.impl;
 
-import com.java.ticketbookingsystem.userservice.dto.*;
+import com.java.ticketbookingsystem.userservice.dto.CognitoUserPoolDetails;
+import com.java.ticketbookingsystem.userservice.dto.UserDetails;
 import com.java.ticketbookingsystem.userservice.exception.TBSUserServiceException;
 import com.java.ticketbookingsystem.userservice.service.tokens.TokenManagementService;
 import com.java.ticketbookingsystem.userservice.service.users.UserService;
@@ -46,8 +47,8 @@ public class AWSUserServiceImpl implements UserService {
     /**
      * Constructs a new UserServiceImpl with AWS Cognito configurations.
      *
-     * @param cognitoClient         the AWS Cognito client for user operations.
-     * @param userPoolDetails       the Cognito user pool configuration details.
+     * @param cognitoClient          the AWS Cognito client for user operations.
+     * @param userPoolDetails        the Cognito user pool configuration details.
      * @param tokenManagementService service responsible for token storage/refresh.
      * @throws IllegalArgumentException if the cognitoClient is null.
      */
