@@ -59,7 +59,7 @@ public class SecurityConfig {
                                 "/webjars/**"
                         ).permitAll()
                         // Allow unauthenticated access to authentication endpoints (adjusted to actual paths)
-                        .requestMatchers("/v1/users/signin", "/v1/users/refresh", "/v1/users/token", "/v1/users/signup").permitAll()
+                        .requestMatchers("/v1/users/signin", "/v1/users/refresh-token", "/v1/users/token", "/v1/users/signup").permitAll()
                         // All other endpoints require authentication
                         .anyRequest().authenticated()
                 )

@@ -23,7 +23,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
-@Service("firebaseUserServiceImpl")
+@Service("firebaseUserService")
 public class FirebaseUserServiceImpl implements UserService {
 
     private final FirebaseAuth firebaseAuth;

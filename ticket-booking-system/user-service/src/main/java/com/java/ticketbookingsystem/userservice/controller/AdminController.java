@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 public class AdminController {
     private final UserService userService;
 
-    public AdminController(@Qualifier("firebaseUserServiceImpl")
+    public AdminController(@Qualifier("firebaseUserService")
                            UserService userService) {
         this.userService = userService;
     }

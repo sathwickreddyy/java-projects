@@ -2,7 +2,7 @@ package com.java.ticketbookingsystem.userservice.controller;
 
 import com.java.ticketbookingsystem.userservice.dto.*;
 import com.java.ticketbookingsystem.userservice.exception.TBSUserServiceException;
-import com.java.ticketbookingsystem.userservice.service.TokenManagementService;
+import com.java.ticketbookingsystem.userservice.service.AuthenticationService;
 import com.java.ticketbookingsystem.userservice.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -12,14 +12,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -43,56 +40,18 @@ import java.util.Objects;
 public class UserAuthController {
 
     private final UserService userService;
-    private final TokenManagementService tokenManagementService;
-    private final RestTemplate restTemplate;
-
-    @Value("${firebase.api.key}")
-    private String firebaseApiKey;
+    private final AuthenticationService authenticationService;
 
     /**
      * Constructs a new AuthController with required dependencies.
      *
      * @param userService            the service layer component handling user operations.
-     * @param tokenManagementService the service handling token management operations.
      * @throws IllegalArgumentException if userService is null.
      */
-    public UserAuthController(@Qualifier("firebaseUserServiceImpl") UserService userService, TokenManagementService tokenManagementService, RestTemplate restTemplate) {
+    public UserAuthController(@Qualifier("firebaseUserService") UserService userService,
+                              @Qualifier("firebaseAuthenticationService") AuthenticationService authenticationService) {
         this.userService = Objects.requireNonNull(userService, "UserService cannot be null");
-        this.tokenManagementService = tokenManagementService;
-        this.restTemplate = restTemplate;
-        log.info("AuthController initialized with UserService implementation: {}",
-                userService.getClass().getSimpleName());
-    }
-
-    /**
-     * Fetches the raw JWT token from the Authorization header.
-     * <p>
-     * This endpoint is primarily for debugging or inspection purposes and does not reissue a new token.
-     *
-     * @param request HttpServletRequest used to retrieve the Authorization header.
-     * @return A JSON response containing the token.
-     * @throws TBSUserServiceException if the token is missing or improperly formatted.
-     */
-    @Operation(
-            summary = "Fetch JWT token",
-            description = "Fetches the raw JWT token provided in the Authorization header",
-            tags = {"Tokens"}
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Token fetched successfully"),
-            @ApiResponse(responseCode = "400", description = "Invalid or missing Authorization header"),
-            @ApiResponse(responseCode = "403", description = "Access denied"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
-    })
-    @GetMapping("/token")
-    public ResponseEntity<TokenResponse> fetchToken(HttpServletRequest request) {
-        String authorization = request.getHeader("Authorization");
-        if (authorization != null && authorization.startsWith("Bearer ")) {
-            String token = authorization.substring(7);
-            return ResponseEntity.ok(new TokenResponse(token));
-        } else {
-            throw new TBSUserServiceException("Authorization token is missing");
-        }
+        this.authenticationService = authenticationService;
     }
 
     /**
@@ -119,61 +78,10 @@ public class UserAuthController {
             @Parameter(description = "Sign-in credentials", required = true)
             @RequestBody AuthenticationRequest signInRequest, HttpServletRequest request) {
         try {
-            return ResponseEntity.ok(
-                    exchangeCustomTokenForIdToken(userService
-                            .signIn(signInRequest, request.getSession().getId())
-                            .getToken())
-            );
+            return ResponseEntity.ok(authenticationService.signIn(signInRequest, request.getSession().getId()));
         } catch (Exception e) {
             log.error("Failed to sign in user: {}", e.getMessage());
             throw new TBSUserServiceException("Sign in failed", e);
-        }
-    }
-
-    /**
-     * Why use custom token?
-     * Why Custom Tokens ≠ ID Tokens
-     * Security Architecture:
-     *
-     * Custom Tokens: Generated server-side via Admin SDK for client-side authentication
-     *
-     * ID Tokens: Generated client-side after Firebase authentication
-     *
-     * Mixing these breaks Firebase's security model
-     * sequenceDiagram
-     *     Client->>Backend: Sign-in Request (email/password)
-     *     Backend->>Firebase: Verify credentials
-     *     Backend->>Client: Return Custom Token
-     *     Client->>Firebase: Exchange Custom Token
-     *     Firebase->>Client: ID Token + Refresh Token
-     *     Client->>Backend: API Requests with ID Token
-     *     Backend->>Firebase: Verify ID Token
-     *
-     * @param customToken Sign-in credentials Custom Token
-     * @return a JSON response containing access and refresh tokens
-     */
-    private AuthenticationResponse exchangeCustomTokenForIdToken(String customToken)
-    {
-        try {
-            log.info("Exchanging custom token for ID token");
-            String url = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithCustomToken?key="
-                    + firebaseApiKey;
-
-            Map<String, String> request = Map.of(
-                    "token", customToken,
-                    "returnSecureToken", "true"
-            );
-            var response = restTemplate.postForEntity(url, request, Map.class);
-            log.debug("Token exchange response: {}", response.getBody());
-            String idToken = (String) response.getBody().get("idToken");
-            String refreshToken = (String) response.getBody().get("refreshToken");
-            return AuthenticationResponse.builder()
-                            .token(idToken)
-                            .refreshToken(refreshToken)
-                            .build();
-        } catch (Exception e) {
-            log.error("Failed to exchange custom token for ID token: {}", e.getMessage());
-            throw new TBSUserServiceException("Token exchange failed");
         }
     }
 
@@ -200,34 +108,6 @@ public class UserAuthController {
         UserDetails currentUserDetails = userService.getUserDetails(currentUserId);
         userService.signOut(currentUserDetails.getUsername());
         return ResponseEntity.noContent().build();
-    }
-
-    /**
-     * Refreshes the access token using the provided refresh token.
-     * <p>
-     * This endpoint returns fresh tokens after verifying the existing refresh token.
-     *
-     * @param request the refresh token request containing username and refresh token.
-     * @return a JSON response containing the new access and refresh tokens.
-     * @throws TBSUserServiceException if either the username or refresh token is missing.
-     */
-    @Operation(
-            summary = "Refresh JWT token",
-            description = "Refreshes the access token using the provided refresh token",
-            tags = {"Tokens"}
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Token refreshed successfully"),
-            @ApiResponse(responseCode = "400", description = "Username or refresh token is missing"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
-    })
-    @PostMapping("/refresh")
-    public ResponseEntity<AuthenticationResponse> refreshToken(@RequestBody RefreshTokenRequest refreshTokenRequest, HttpServletRequest request) {
-        if (refreshTokenRequest.getUsername() == null || refreshTokenRequest.getRefreshToken() == null) {
-            throw new TBSUserServiceException("Username or refresh token is missing");
-        }
-        AuthenticationResponse response = tokenManagementService.refreshTokens(request.getSession().getId(), refreshTokenRequest.getUsername(), refreshTokenRequest.getRefreshToken());
-        return ResponseEntity.ok(response);
     }
 
     /**
