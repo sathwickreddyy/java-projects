@@ -1,6 +1,5 @@
 package com.java.ticketbookingsystem.userservice.security;
 
-import com.java.ticketbookingsystem.userservice.security.filters.AWSJwtAuthenticationFilter;
 import com.java.ticketbookingsystem.userservice.security.filters.FirebaseAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,16 +16,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    private final AWSJwtAuthenticationFilter AWSJwtAuthenticationFilter;
+//    private final AWSJwtAuthenticationFilter AWSJwtAuthenticationFilter;
     private final FirebaseAuthenticationFilter firebaseAuthenticationFilter;
 
-    /**
-     * Constructs the SecurityConfig with the JWT authentication filter.
-     *
-     * @param AWSJwtAuthenticationFilter the filter that validates JWT tokens from requests.
-     */
-    public SecurityConfig(AWSJwtAuthenticationFilter AWSJwtAuthenticationFilter, FirebaseAuthenticationFilter firebaseAuthenticationFilter) {
-        this.AWSJwtAuthenticationFilter = AWSJwtAuthenticationFilter;
+    public SecurityConfig(FirebaseAuthenticationFilter firebaseAuthenticationFilter) {
         this.firebaseAuthenticationFilter = firebaseAuthenticationFilter;
     }
 
@@ -66,7 +59,7 @@ public class SecurityConfig {
                                 "/webjars/**"
                         ).permitAll()
                         // Allow unauthenticated access to authentication endpoints (adjusted to actual paths)
-                        .requestMatchers("/v1/users/signin", "/v1/users/refresh", "/v1/users/token").permitAll()
+                        .requestMatchers("/v1/users/signin", "/v1/users/refresh", "/v1/users/token", "/v1/users/signup").permitAll()
                         // All other endpoints require authentication
                         .anyRequest().authenticated()
                 )

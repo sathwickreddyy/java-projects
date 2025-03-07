@@ -33,4 +33,9 @@ public class UserDetailsResponse {
      * The phone number of the user.
      */
     private String phoneNumber;
+
+    /**
+     * The role of the user.
+     */
+    private String role;
 }

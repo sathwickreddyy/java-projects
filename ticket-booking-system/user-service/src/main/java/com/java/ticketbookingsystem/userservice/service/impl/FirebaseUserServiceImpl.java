@@ -32,6 +32,7 @@ public class FirebaseUserServiceImpl implements UserService {
     public FirebaseUserServiceImpl(FirebaseAuth firebaseAuth, Firestore firestore) {
         this.firebaseAuth = firebaseAuth;
         this.firestore = firestore;
+        log.info("FirebaseUserServiceImpl initialized");
     }
 
     /**
@@ -44,6 +45,7 @@ public class FirebaseUserServiceImpl implements UserService {
     @Override
     public UserDetails getUserDetails(String uid) {
         try {
+            log.info("Fetching user details for {}", uid);
             DocumentSnapshot doc = firestore.collection("users").document(uid).get().get();
             return UserDetails.builder()
                     .username(uid)
@@ -107,9 +109,9 @@ public class FirebaseUserServiceImpl implements UserService {
     @Override
     public AuthenticationResponse signIn(AuthenticationRequest signInRequest, String sessionId) {
         try {
-            log.debug("Sign-in attempt for username: {}", signInRequest.getUsername());
+            log.info("Sign-in attempt for username/email: {}", signInRequest.getUsername()+" "+signInRequest.getEmail());
 
-            UserRecord userRecord = firebaseAuth.getUserByEmail(signInRequest.getUsername());
+            UserRecord userRecord = firebaseAuth.getUserByEmail(signInRequest.getEmail());
             // In production, implement proper password verification flow
             // This would typically be handled client-side with Firebase SDK
 
@@ -154,10 +156,15 @@ public class FirebaseUserServiceImpl implements UserService {
     public String getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated()) {
-            return ((FirebaseToken) authentication.getPrincipal()).getUid();
+            Object principal = authentication.getPrincipal();
+            if (principal instanceof FirebaseToken) {
+                return ((FirebaseToken) principal).getUid();
+            }
+            return principal.toString();
         }
         return "anonymousUser";
     }
+
 
     /**
      * Registers a new user in Cloud.
@@ -196,7 +203,7 @@ public class FirebaseUserServiceImpl implements UserService {
 
         } catch (Exception e) {
             log.error("Signup failed: {}", e.getMessage());
-            throw new TBSUserServiceException("User registration failed");
+            throw new TBSUserServiceException("User registration failed "+e.getMessage());
         }
     }
 

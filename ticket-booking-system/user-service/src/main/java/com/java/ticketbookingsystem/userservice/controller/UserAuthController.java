@@ -12,11 +12,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -41,6 +44,10 @@ public class UserAuthController {
 
     private final UserService userService;
     private final TokenManagementService tokenManagementService;
+    private final RestTemplate restTemplate;
+
+    @Value("${firebase.api.key}")
+    private String firebaseApiKey;
 
     /**
      * Constructs a new AuthController with required dependencies.
@@ -49,9 +56,10 @@ public class UserAuthController {
      * @param tokenManagementService the service handling token management operations.
      * @throws IllegalArgumentException if userService is null.
      */
-    public UserAuthController(@Qualifier("firebaseUserServiceImpl") UserService userService, TokenManagementService tokenManagementService) {
+    public UserAuthController(@Qualifier("firebaseUserServiceImpl") UserService userService, TokenManagementService tokenManagementService, RestTemplate restTemplate) {
         this.userService = Objects.requireNonNull(userService, "UserService cannot be null");
         this.tokenManagementService = tokenManagementService;
+        this.restTemplate = restTemplate;
         log.info("AuthController initialized with UserService implementation: {}",
                 userService.getClass().getSimpleName());
     }
@@ -111,11 +119,61 @@ public class UserAuthController {
             @Parameter(description = "Sign-in credentials", required = true)
             @RequestBody AuthenticationRequest signInRequest, HttpServletRequest request) {
         try {
-            AuthenticationResponse response = userService.signIn(signInRequest, request.getSession().getId());
-            return ResponseEntity.ok(response);
+            return ResponseEntity.ok(
+                    exchangeCustomTokenForIdToken(userService
+                            .signIn(signInRequest, request.getSession().getId())
+                            .getToken())
+            );
         } catch (Exception e) {
             log.error("Failed to sign in user: {}", e.getMessage());
             throw new TBSUserServiceException("Sign in failed", e);
+        }
+    }
+
+    /**
+     * Why use custom token?
+     * Why Custom Tokens ≠ ID Tokens
+     * Security Architecture:
+     *
+     * Custom Tokens: Generated server-side via Admin SDK for client-side authentication
+     *
+     * ID Tokens: Generated client-side after Firebase authentication
+     *
+     * Mixing these breaks Firebase's security model
+     * sequenceDiagram
+     *     Client->>Backend: Sign-in Request (email/password)
+     *     Backend->>Firebase: Verify credentials
+     *     Backend->>Client: Return Custom Token
+     *     Client->>Firebase: Exchange Custom Token
+     *     Firebase->>Client: ID Token + Refresh Token
+     *     Client->>Backend: API Requests with ID Token
+     *     Backend->>Firebase: Verify ID Token
+     *
+     * @param customToken Sign-in credentials Custom Token
+     * @return a JSON response containing access and refresh tokens
+     */
+    private AuthenticationResponse exchangeCustomTokenForIdToken(String customToken)
+    {
+        try {
+            log.info("Exchanging custom token for ID token");
+            String url = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithCustomToken?key="
+                    + firebaseApiKey;
+
+            Map<String, String> request = Map.of(
+                    "token", customToken,
+                    "returnSecureToken", "true"
+            );
+            var response = restTemplate.postForEntity(url, request, Map.class);
+            log.debug("Token exchange response: {}", response.getBody());
+            String idToken = (String) response.getBody().get("idToken");
+            String refreshToken = (String) response.getBody().get("refreshToken");
+            return AuthenticationResponse.builder()
+                            .token(idToken)
+                            .refreshToken(refreshToken)
+                            .build();
+        } catch (Exception e) {
+            log.error("Failed to exchange custom token for ID token: {}", e.getMessage());
+            throw new TBSUserServiceException("Token exchange failed");
         }
     }
 
@@ -138,8 +196,8 @@ public class UserAuthController {
     })
     @DeleteMapping("/signout")
     public ResponseEntity<Void> signOut() {
-        String currentUserName = userService.getCurrentUser();
-        UserDetails currentUserDetails = userService.getUserDetails(currentUserName);
+        String currentUserId = userService.getCurrentUser();
+        UserDetails currentUserDetails = userService.getUserDetails(currentUserId);
         userService.signOut(currentUserDetails.getUsername());
         return ResponseEntity.noContent().build();
     }
@@ -191,10 +249,12 @@ public class UserAuthController {
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    @GetMapping("/getCurrentUser")
+    @GetMapping("/me")
     public ResponseEntity<UserDetailsResponse> getCurrentUser() {
-        String currentUserName = userService.getCurrentUser();
-        UserDetails currentUserDetails = userService.getUserDetails(currentUserName);
+        log.info("Retrieving current user details");
+        String currentUserId = userService.getCurrentUser();
+        log.info("Current user ID: {}", currentUserId);
+        UserDetails currentUserDetails = userService.getUserDetails(currentUserId);
         if (currentUserDetails == null) {
             throw new TBSUserServiceException("No current user found");
         }
@@ -205,6 +265,7 @@ public class UserAuthController {
         response.setEmail(currentUserDetails.getEmail());
         response.setGender(currentUserDetails.getGender());
         response.setPhoneNumber(currentUserDetails.getPhoneNumber());
+        response.setRole(currentUserDetails.getAuthorities().toString());
         return ResponseEntity.ok(response);
     }
 
@@ -232,6 +293,7 @@ public class UserAuthController {
 
         try {
             AuthenticationResponse response = userService.signUp(registrationRequest);
+            log.info("User registered successfully: {}", response);
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (Exception e) {
             log.error("Registration failed: {}", e.getMessage());

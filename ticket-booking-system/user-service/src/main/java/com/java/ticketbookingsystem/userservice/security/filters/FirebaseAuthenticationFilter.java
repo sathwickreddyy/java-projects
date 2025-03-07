@@ -32,13 +32,13 @@ public class FirebaseAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        log.info("Firebase authentication filter called");
         String authorization = request.getHeader("Authorization");
         if (authorization != null && authorization.startsWith("Bearer ")) {
             String token = authorization.substring(7);
             try {
                 FirebaseToken decodedToken = firebaseAuth.verifyIdToken(token);
                 Authentication auth = new FirebaseAuthenticationToken(
-                        decodedToken.getUid(),
                         decodedToken,
                         extractAuthorities(decodedToken)
                 );
@@ -46,9 +46,11 @@ public class FirebaseAuthenticationFilter extends OncePerRequestFilter {
             } catch (FirebaseAuthException e) {
                 log.error("Firebase authentication failed: {}", e.getMessage());
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                return;
             }
         }
         filterChain.doFilter(request, response);
+        log.info("User authenticated: {}", SecurityContextHolder.getContext().getAuthentication());
     }
 
     private Collection<? extends GrantedAuthority> extractAuthorities(FirebaseToken token) {
@@ -62,25 +64,23 @@ public class FirebaseAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private static class FirebaseAuthenticationToken extends AbstractAuthenticationToken {
-        private final String uid;
         private final FirebaseToken decodedToken;
 
-        public FirebaseAuthenticationToken(String uid, FirebaseToken decodedToken,
+        public FirebaseAuthenticationToken(FirebaseToken decodedToken,
                                            Collection<? extends GrantedAuthority> authorities) {
             super(authorities);
-            this.uid = uid;
             this.decodedToken = decodedToken;
             setAuthenticated(true);
         }
 
         @Override
         public Object getCredentials() {
-            return decodedToken;
+            return ""; // Credentials not needed for Firebase token
         }
 
         @Override
         public Object getPrincipal() {
-            return uid;
+            return decodedToken; // Return the complete Firebase token
         }
     }
 }
