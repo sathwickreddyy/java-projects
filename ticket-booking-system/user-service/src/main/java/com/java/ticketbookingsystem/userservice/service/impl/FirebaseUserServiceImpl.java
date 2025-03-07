@@ -48,7 +48,7 @@ public class FirebaseUserServiceImpl implements UserService {
             log.info("Fetching user details for {}", uid);
             DocumentSnapshot doc = firestore.collection("users").document(uid).get().get();
             return UserDetails.builder()
-                    .username(uid)
+                    .username(doc.getString("username"))
                     .email(doc.getString("email"))
                     .name(doc.getString("name"))
                     .phoneNumber(doc.getString("phoneNumber"))
@@ -190,6 +190,7 @@ public class FirebaseUserServiceImpl implements UserService {
             userData.put("phoneNumber", request.getPhoneNumber());
             userData.put("gender", request.getGender());
             userData.put("roles", Collections.singletonList(assignDefaultRole(request)));
+            userData.put("username", request.getUsername());
 
             firestore.collection("users").document(userRecord.getUid()).set(userData).get();
 
