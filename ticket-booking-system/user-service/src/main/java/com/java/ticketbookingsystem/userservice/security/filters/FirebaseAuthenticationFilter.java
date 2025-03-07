@@ -3,6 +3,7 @@ package com.java.ticketbookingsystem.userservice.security.filters;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
+import com.java.ticketbookingsystem.userservice.exception.TBSUserServiceException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -52,6 +53,26 @@ public class FirebaseAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
+    /**
+     * Expected Behavior:
+     * <pre>
+     * Storing Roles: You store roles as simple strings (e.g., "USER").
+     *
+     * Constructing Authorities: You construct authorities by prefixing the stored role with "ROLE_" (e.g., "ROLE_USER").
+     * This is the expected behavior because Spring Security uses the "ROLE_" prefix for role-based access control. By storing roles without the prefix and adding it during authority construction, you maintain consistency with Spring Security's conventions.
+     *</pre>
+     *
+     * Example Walkthrough:
+     * <pre>
+     * Registration Request: A user registers with no specified role.
+     * Default Role Assignment: The assignDefaultRole method returns "USER".
+     * Storing in Firestore and Custom Claims: The role "USER" is stored.
+     * Extracting Authorities: The authentication filter extracts the role "USER" from custom claims and constructs an authority "ROLE_USER".
+     * This approach ensures that your roles are properly stored and used for authorization checks in your application.
+     * </pre>
+     * @param token FirebaseToken
+     * @return Collection<Authorities>
+     */
     private Collection<? extends GrantedAuthority> extractAuthorities(FirebaseToken token) {
         Map<String, Object> claims = token.getClaims();
         if (claims.containsKey("roles")) {

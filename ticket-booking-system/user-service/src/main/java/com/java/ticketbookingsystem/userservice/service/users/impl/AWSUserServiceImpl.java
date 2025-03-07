@@ -1,9 +1,9 @@
-package com.java.ticketbookingsystem.userservice.service.impl;
+package com.java.ticketbookingsystem.userservice.service.users.impl;
 
 import com.java.ticketbookingsystem.userservice.dto.*;
 import com.java.ticketbookingsystem.userservice.exception.TBSUserServiceException;
 import com.java.ticketbookingsystem.userservice.service.TokenManagementService;
-import com.java.ticketbookingsystem.userservice.service.UserService;
+import com.java.ticketbookingsystem.userservice.service.users.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.Authentication;
@@ -15,12 +15,9 @@ import software.amazon.awssdk.services.cognitoidentityprovider.CognitoIdentityPr
 import software.amazon.awssdk.services.cognitoidentityprovider.model.AdminGetUserResponse;
 import software.amazon.awssdk.services.cognitoidentityprovider.model.AdminListGroupsForUserResponse;
 import software.amazon.awssdk.services.cognitoidentityprovider.model.AttributeType;
-import software.amazon.awssdk.services.cognitoidentityprovider.model.AuthFlowType;
 import software.amazon.awssdk.services.cognitoidentityprovider.model.CognitoIdentityProviderException;
-import software.amazon.awssdk.services.cognitoidentityprovider.model.InitiateAuthResponse;
 
 import java.util.Collection;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -127,17 +124,6 @@ public class AWSUserServiceImpl implements UserService {
     }
 
     /**
-     * Registers a new user in Cloud.
-     *
-     * @param request RegistrationRequest
-     * @return AuthenticationResponse
-     */
-    @Override
-    public AuthenticationResponse signUp(RegistrationRequest request) {
-        return null;
-    }
-
-    /**
      * Updates a user's role in Cognito by modifying the custom role attribute.
      *
      * @param username the username whose role is being updated.
@@ -163,63 +149,63 @@ public class AWSUserServiceImpl implements UserService {
         }
     }
 
-    /**
-     * Authenticates a user using Cognito's USER_PASSWORD_AUTH flow.
-     * On successful authentication, tokens are stored for future expiry/refresh.
-     *
-     * @param signInRequest contains the username and password.
-     * @return AuthenticationResponse containing valid access and refresh tokens.
-     * @throws TBSUserServiceException if authentication fails.
-     */
-    @Override
-    public AuthenticationResponse signIn(AuthenticationRequest signInRequest, String sessionId) {
-        try {
-            InitiateAuthResponse authResponse = cognitoClient.initiateAuth(r -> r
-                    .authFlow(AuthFlowType.USER_PASSWORD_AUTH)
-                    .clientId(userPoolDetails.getClientId())
-                    .authParameters(Map.of(
-                            "USERNAME", signInRequest.getUsername(),
-                            "PASSWORD", signInRequest.getPassword()
-                    )));
-            String accessToken = authResponse.authenticationResult().accessToken();
-            String refreshToken = authResponse.authenticationResult().refreshToken();
-            long expiresIn = authResponse.authenticationResult().expiresIn();
-
-            tokenManagementService.storeTokens(sessionId, signInRequest.getUsername(), accessToken, refreshToken, expiresIn);
-            log.info("User {} signed in successfully.", signInRequest.getUsername());
-            return AuthenticationResponse.builder()
-                    .token(accessToken)
-                    .refreshToken(refreshToken)
-                    .build();
-        } catch (CognitoIdentityProviderException e) {
-            log.error("Sign in failed for user {}: {}", signInRequest.getUsername(), e.getMessage());
-            throw new TBSUserServiceException("Failed to sign in user", e);
-        }
-    }
-
-    /**
-     * Signs out a user using Cognito's globalSignOut API.
-     * Tokens stored in the local cache are also invalidated.
-     *
-     * @param username the username of the user to sign out.
-     * @throws TBSUserServiceException if sign-out fails.
-     */
-    @Override
-    public void signOut(String username) {
-        try {
-            TokenHolder tokenHolder = tokenManagementService.getTokens(username);
-            if (tokenHolder != null) {
-                cognitoClient.globalSignOut(r -> r.accessToken(tokenHolder.getAccessToken()));
-                tokenManagementService.invalidateTokens(username);
-                log.info("User {} signed out successfully.", username);
-            } else {
-                log.warn("No tokens found for user {}. Sign out skipped.", username);
-            }
-        } catch (CognitoIdentityProviderException e) {
-            log.error("Sign out failed for user {}: {}", username, e.getMessage());
-            throw new TBSUserServiceException("Failed to sign out user", e);
-        }
-    }
+//    /**
+//     * Authenticates a user using Cognito's USER_PASSWORD_AUTH flow.
+//     * On successful authentication, tokens are stored for future expiry/refresh.
+//     *
+//     * @param signInRequest contains the username and password.
+//     * @return AuthenticationResponse containing valid access and refresh tokens.
+//     * @throws TBSUserServiceException if authentication fails.
+//     */
+//    @Override
+//    public AuthenticationResponse signIn(AuthenticationRequest signInRequest, String sessionId) {
+//        try {
+//            InitiateAuthResponse authResponse = cognitoClient.initiateAuth(r -> r
+//                    .authFlow(AuthFlowType.USER_PASSWORD_AUTH)
+//                    .clientId(userPoolDetails.getClientId())
+//                    .authParameters(Map.of(
+//                            "USERNAME", signInRequest.getUsername(),
+//                            "PASSWORD", signInRequest.getPassword()
+//                    )));
+//            String accessToken = authResponse.authenticationResult().accessToken();
+//            String refreshToken = authResponse.authenticationResult().refreshToken();
+//            long expiresIn = authResponse.authenticationResult().expiresIn();
+//
+//            tokenManagementService.storeTokens(sessionId, signInRequest.getUsername(), accessToken, refreshToken, expiresIn);
+//            log.info("User {} signed in successfully.", signInRequest.getUsername());
+//            return AuthenticationResponse.builder()
+//                    .token(accessToken)
+//                    .refreshToken(refreshToken)
+//                    .build();
+//        } catch (CognitoIdentityProviderException e) {
+//            log.error("Sign in failed for user {}: {}", signInRequest.getUsername(), e.getMessage());
+//            throw new TBSUserServiceException("Failed to sign in user", e);
+//        }
+//    }
+//
+//    /**
+//     * Signs out a user using Cognito's globalSignOut API.
+//     * Tokens stored in the local cache are also invalidated.
+//     *
+//     * @param username the username of the user to sign out.
+//     * @throws TBSUserServiceException if sign-out fails.
+//     */
+//    @Override
+//    public void signOut(String username) {
+//        try {
+//            TokenHolder tokenHolder = tokenManagementService.getTokens(username);
+//            if (tokenHolder != null) {
+//                cognitoClient.globalSignOut(r -> r.accessToken(tokenHolder.getAccessToken()));
+//                tokenManagementService.invalidateTokens(username);
+//                log.info("User {} signed out successfully.", username);
+//            } else {
+//                log.warn("No tokens found for user {}. Sign out skipped.", username);
+//            }
+//        } catch (CognitoIdentityProviderException e) {
+//            log.error("Sign out failed for user {}: {}", username, e.getMessage());
+//            throw new TBSUserServiceException("Failed to sign out user", e);
+//        }
+//    }
 
     /**
      * Helper method to safely extract an attribute from the Cognito user profile.

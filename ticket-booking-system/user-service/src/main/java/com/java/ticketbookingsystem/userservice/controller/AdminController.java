@@ -3,7 +3,7 @@ package com.java.ticketbookingsystem.userservice.controller;
 
 import com.java.ticketbookingsystem.userservice.dto.UserDetails;
 import com.java.ticketbookingsystem.userservice.exception.TBSUserServiceException;
-import com.java.ticketbookingsystem.userservice.service.UserService;
+import com.java.ticketbookingsystem.userservice.service.users.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

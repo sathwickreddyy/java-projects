@@ -2,8 +2,8 @@ package com.java.ticketbookingsystem.userservice.controller;
 
 import com.java.ticketbookingsystem.userservice.dto.*;
 import com.java.ticketbookingsystem.userservice.exception.TBSUserServiceException;
-import com.java.ticketbookingsystem.userservice.service.AuthenticationService;
-import com.java.ticketbookingsystem.userservice.service.UserService;
+import com.java.ticketbookingsystem.userservice.service.auth.AuthenticationService;
+import com.java.ticketbookingsystem.userservice.service.users.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -37,7 +37,7 @@ import java.util.Objects;
 @RequestMapping("/v1/users")
 @Slf4j
 @Validated
-public class UserAuthController {
+public class AuthController {
 
     private final UserService userService;
     private final AuthenticationService authenticationService;
@@ -48,8 +48,8 @@ public class UserAuthController {
      * @param userService            the service layer component handling user operations.
      * @throws IllegalArgumentException if userService is null.
      */
-    public UserAuthController(@Qualifier("firebaseUserService") UserService userService,
-                              @Qualifier("firebaseAuthenticationService") AuthenticationService authenticationService) {
+    public AuthController(@Qualifier("firebaseUserService") UserService userService,
+                          @Qualifier("firebaseAuthenticationService") AuthenticationService authenticationService) {
         this.userService = Objects.requireNonNull(userService, "UserService cannot be null");
         this.authenticationService = authenticationService;
     }
@@ -105,7 +105,7 @@ public class UserAuthController {
     @DeleteMapping("/signout")
     public ResponseEntity<Void> signOut() {
         String currentUserId = userService.getCurrentUser();
-        userService.signOut(currentUserId);
+        authenticationService.signOut(currentUserId);
         return ResponseEntity.noContent().build();
     }
 
@@ -171,8 +171,8 @@ public class UserAuthController {
             @Valid @RequestBody RegistrationRequest registrationRequest) {
 
         try {
-            AuthenticationResponse response = userService.signUp(registrationRequest);
-            log.info("User registered successfully: {}", response);
+            AuthenticationResponse response = authenticationService.signUp(registrationRequest);
+            log.info("User registered successfully: {}", registrationRequest.getUsername());
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (Exception e) {
             log.error("Registration failed: {}", e.getMessage());

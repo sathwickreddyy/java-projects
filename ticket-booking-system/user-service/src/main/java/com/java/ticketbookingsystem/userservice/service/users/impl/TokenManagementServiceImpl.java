@@ -1,4 +1,4 @@
-package com.java.ticketbookingsystem.userservice.service.impl;
+package com.java.ticketbookingsystem.userservice.service.users.impl;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.java.ticketbookingsystem.userservice.dto.AuthenticationResponse;

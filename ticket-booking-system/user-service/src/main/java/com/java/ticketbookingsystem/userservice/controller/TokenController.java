@@ -1,9 +1,8 @@
 package com.java.ticketbookingsystem.userservice.controller;
 
-import com.java.ticketbookingsystem.userservice.dto.AuthenticationResponse;
 import com.java.ticketbookingsystem.userservice.dto.TokenResponse;
 import com.java.ticketbookingsystem.userservice.exception.TBSUserServiceException;
-import com.java.ticketbookingsystem.userservice.service.AuthenticationService;
+import com.java.ticketbookingsystem.userservice.service.auth.AuthenticationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
