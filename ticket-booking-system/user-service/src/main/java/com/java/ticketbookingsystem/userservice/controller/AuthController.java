@@ -164,13 +164,13 @@ public class AuthController {
             @ApiResponse(responseCode = "409", description = "User already exists"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-
     @PostMapping("/signup")
     public ResponseEntity<AuthenticationResponse> signUp(
             @Parameter(description = "User registration details", required = true)
             @Valid @RequestBody RegistrationRequest registrationRequest) {
 
         try {
+            log.info("Registering new user: {}", registrationRequest.getUsername());
             AuthenticationResponse response = authenticationService.signUp(registrationRequest);
             log.info("User registered successfully: {}", registrationRequest.getUsername());
             return ResponseEntity.status(HttpStatus.CREATED).body(response);

@@ -1,6 +1,9 @@
 package com.java.ticketbookingsystem.userservice.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 /**
@@ -9,6 +12,9 @@ import lombok.Data;
  * of a token holder.
  */
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class TokenHolder {
     /**
      * The access token.

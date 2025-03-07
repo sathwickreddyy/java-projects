@@ -1,11 +1,11 @@
-package com.java.ticketbookingsystem.userservice.service.users.impl;
+package com.java.ticketbookingsystem.userservice.service.tokens.impl;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.java.ticketbookingsystem.userservice.dto.AuthenticationResponse;
 import com.java.ticketbookingsystem.userservice.dto.CognitoUserPoolDetails;
 import com.java.ticketbookingsystem.userservice.dto.TokenHolder;
 import com.java.ticketbookingsystem.userservice.exception.TBSUserServiceException;
-import com.java.ticketbookingsystem.userservice.service.TokenManagementService;
+import com.java.ticketbookingsystem.userservice.service.tokens.TokenManagementService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.services.cognitoidentityprovider.CognitoIdentityProviderClient;
@@ -19,13 +19,13 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 @Service
-public class TokenManagementServiceImpl implements TokenManagementService {
+public class AWSTokenManagementServiceImpl implements TokenManagementService {
 
     private final CognitoUserPoolDetails cognitoUserPoolDetails;
     private final CognitoIdentityProviderClient cognitoIdentityProviderClient;
     private final Cache<String, Map<String, TokenHolder>> usersSessionsTokenCache;
 
-    public TokenManagementServiceImpl(CognitoUserPoolDetails cognitoUserPoolDetails, CognitoIdentityProviderClient cognitoIdentityProviderClient, Cache<String, Map<String, TokenHolder>> usersSessionsTokenCache) {
+    public AWSTokenManagementServiceImpl(CognitoUserPoolDetails cognitoUserPoolDetails, CognitoIdentityProviderClient cognitoIdentityProviderClient, Cache<String, Map<String, TokenHolder>> usersSessionsTokenCache) {
         this.cognitoUserPoolDetails = cognitoUserPoolDetails;
         this.cognitoIdentityProviderClient = cognitoIdentityProviderClient;
         this.usersSessionsTokenCache = usersSessionsTokenCache;

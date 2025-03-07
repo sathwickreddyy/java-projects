@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
  * Configuration class for AWS Cognito Integration.
  */
 @Configuration
-public class CognitoConfig {
+public class CommonConfigurations {
 
     @Value("${aws.cognito.userPoolId}")
     private String userPoolId;
