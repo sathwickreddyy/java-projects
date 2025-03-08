@@ -11,9 +11,9 @@ public interface AuthenticationService {
      * Registers a new user in Cloud.
      *
      * @param request RegistrationRequest
-     * @return AuthenticationResponse
+     * @return Boolean
      */
-    AuthenticationResponse signUp(RegistrationRequest request);
+    Boolean signUp(RegistrationRequest request);
 
     /**
      * Authenticates a user by verifying their credentials.

@@ -19,7 +19,6 @@ public class UserDetails {
     private String phoneNumber;
     private String gender;
     private Collection<? extends GrantedAuthority> authorities;
-
     /**
      * Enum defining the possible user roles in the system.
      * Used for role-based access control and user management.

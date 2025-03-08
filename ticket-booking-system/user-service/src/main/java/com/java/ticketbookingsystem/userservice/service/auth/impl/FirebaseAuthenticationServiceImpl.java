@@ -91,7 +91,7 @@ public class FirebaseAuthenticationServiceImpl implements AuthenticationService 
      * @return AuthenticationResponse
      */
     @Override
-    public AuthenticationResponse signUp(RegistrationRequest request) {
+    public Boolean signUp(RegistrationRequest request) {
         try {
             // Create Firebase user
             UserRecord.CreateRequest createRequest = new UserRecord.CreateRequest()
@@ -119,10 +119,7 @@ public class FirebaseAuthenticationServiceImpl implements AuthenticationService 
             claims.put("roles", Collections.singletonList(defaultRole));
             firebaseAuth.setCustomUserClaims(userRecord.getUid(), claims);
 
-            // Generate custom token
-            String customToken = firebaseAuth.createCustomToken(userRecord.getUid());
-
-            return exchangeCustomTokenForIdToken(customToken);
+            return true;
         } catch (Exception e) {
             log.error("Signup failed: {}", e.getMessage());
             throw new TBSUserServiceException("User registration failed " + e.getMessage());

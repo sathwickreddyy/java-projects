@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/v1/users")
+@RequestMapping("/v1/admin/users")
 @PreAuthorize("hasRole('ADMIN')")
 public class AdminController {
     private final UserService userService;
@@ -76,13 +76,10 @@ public class AdminController {
             @ApiResponse(responseCode = "404", description = "User not found"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    @PutMapping("/{userId}/role")
+    @PutMapping("/{userId}/role/{role}")
     public ResponseEntity<Void> updateUserRole(
-            @Parameter(description = "ID of the user to update", required = true)
-            @PathVariable String userId,
-            @Parameter(description = "New role for the user", required = true)
-            @RequestBody UserDetails.UserRole role) {
-
+            @PathVariable("userId") String userId,
+            @PathVariable("role") UserDetails.UserRole role) {
         log.info("Received role update request for user {} to {}", userId, role);
         userService.updateUserRole(userId, role);
         log.debug("Successfully updated role for user {}", userId);

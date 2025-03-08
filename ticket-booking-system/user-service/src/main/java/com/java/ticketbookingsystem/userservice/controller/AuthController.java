@@ -158,18 +158,18 @@ public class AuthController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @PostMapping("/signup")
-    public ResponseEntity<AuthenticationResponse> signUp(
+    public ResponseEntity<String> signUp(
             @Parameter(description = "User registration details", required = true)
             @Valid @RequestBody RegistrationRequest registrationRequest) {
 
         try {
             log.info("Registering new user: {}", registrationRequest.getUsername());
-            AuthenticationResponse response = authenticationService.signUp(registrationRequest);
+            authenticationService.signUp(registrationRequest);
             log.info("User registered successfully: {}", registrationRequest.getUsername());
-            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Registration Successful");
         } catch (Exception e) {
             log.error("Registration failed: {}", e.getMessage());
-            throw new TBSUserServiceException("User registration failed", e);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 }
