@@ -90,14 +90,24 @@ public class TokenController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @PostMapping("/refresh-token")
-    public ResponseEntity<TokenResponse> refreshToken(@RequestHeader("Authorization") String authHeader, HttpServletResponse response) {
+    public ResponseEntity<TokenResponse> refreshToken(HttpServletRequest request, HttpServletResponse response) {
+        String currentToken;
+        Optional<String> tokenOptional = CookieUtil.fetchTokenFromCookie(request);
+        if (tokenOptional.isPresent()) {
+            currentToken = tokenOptional.get();
+        } else {
+            String authHeader = request.getHeader("Authorization");
+            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid authorization header");
+            }
+            currentToken = authHeader.substring(7);
+        }
         log.info("Refreshing token");
-        String expiredToken = authHeader.substring(7);
+        // Refresh Token
+        TokenResponse tokenResponse = authenticationService.refreshToken(currentToken);
 
         // Update the Cookie with new token
-        TokenResponse tokenResponse = authenticationService.refreshToken(expiredToken);
         CookieUtil.storeAuthTokenCookie(response, tokenResponse.getToken());
-
         return ResponseEntity.ok(tokenResponse);
     }
 }
