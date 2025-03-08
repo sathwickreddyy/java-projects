@@ -134,12 +134,11 @@ public class FirebaseAuthenticationServiceImpl implements AuthenticationService 
      * Authenticates a user by verifying their credentials.
      *
      * @param signInRequest The authentication request containing username and password
-     * @param sessionId     The session ID
      * @return AuthenticationResponse containing token and refresh token
      * @throws TBSUserServiceException if authentication fails
      */
     @Override
-    public AuthenticationResponse signIn(AuthenticationRequest signInRequest, String sessionId) {
+    public AuthenticationResponse signIn(AuthenticationRequest signInRequest) {
         try {
             log.info("Sign-in attempt for username/email: {}", signInRequest.getUsername() + " " + signInRequest.getEmail());
 
@@ -162,11 +161,10 @@ public class FirebaseAuthenticationServiceImpl implements AuthenticationService 
      * Refreshes a user's authentication token.
      *
      * @param expiredToken refresh token
-     * @param sessionId    The session ID
      * @return TokenResponse
      */
     @Override
-    public TokenResponse refreshToken(String expiredToken, String sessionId) {
+    public TokenResponse refreshToken(String expiredToken) {
         try {
             // Verify token even if expired
             FirebaseToken decodedToken = firebaseAuth.verifyIdToken(expiredToken, true);
@@ -194,7 +192,7 @@ public class FirebaseAuthenticationServiceImpl implements AuthenticationService 
      * @throws TBSUserServiceException if signing out fails
      */
     @Override
-    public void signOut(String userId, String sessionId) {
+    public void signOut(String userId) {
         try {
             log.info("Signing out user: {}", userId);
             firebaseAuth.revokeRefreshTokens(userId);

@@ -4,11 +4,12 @@ import com.java.ticketbookingsystem.userservice.dto.*;
 import com.java.ticketbookingsystem.userservice.exception.TBSUserServiceException;
 import com.java.ticketbookingsystem.userservice.service.auth.AuthenticationService;
 import com.java.ticketbookingsystem.userservice.service.users.UserService;
+import com.java.ticketbookingsystem.userservice.utils.CookieUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -76,9 +77,15 @@ public class AuthController {
     @PostMapping("/signin")
     public ResponseEntity<AuthenticationResponse> signIn(
             @Parameter(description = "Sign-in credentials", required = true)
-            @RequestBody AuthenticationRequest signInRequest, HttpServletRequest request) {
+            @RequestBody AuthenticationRequest signInRequest,
+            HttpServletResponse response) {
         try {
-            return ResponseEntity.ok(authenticationService.signIn(signInRequest, request.getSession().getId()));
+            AuthenticationResponse authenticationResponse = authenticationService.signIn(signInRequest);
+
+            // Store the token in a secure cookie
+            CookieUtil.storeAuthTokenCookie(response, authenticationResponse.getToken());
+
+            return ResponseEntity.ok(authenticationResponse);
         } catch (Exception e) {
             log.error("Failed to sign in user: {}", e.getMessage());
             throw new TBSUserServiceException("Sign in failed", e);
@@ -103,9 +110,13 @@ public class AuthController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @DeleteMapping("/signout")
-    public ResponseEntity<Void> signOut(HttpServletRequest request) {
+    public ResponseEntity<Void> signOut(HttpServletResponse response) {
         String currentUserId = userService.getCurrentUser();
-        authenticationService.signOut(currentUserId, request.getSession().getId());
+        authenticationService.signOut(currentUserId);
+
+        // Clear Cookies for auth token
+        CookieUtil.deleteAuthTokenCookie(response);
+
         return ResponseEntity.noContent().build();
     }
 
@@ -129,7 +140,7 @@ public class AuthController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/me")
-    public ResponseEntity<UserDetailsResponse> currentUser(HttpServletRequest request) {
+    public ResponseEntity<UserDetailsResponse> currentUser() {
         log.info("Retrieving current user details");
         String currentUserId = userService.getCurrentUser();
         log.info("Current user ID: {}", currentUserId);

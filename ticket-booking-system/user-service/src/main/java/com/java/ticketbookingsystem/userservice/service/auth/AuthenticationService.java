@@ -19,20 +19,18 @@ public interface AuthenticationService {
      * Authenticates a user by verifying their credentials.
      *
      * @param signInRequest The authentication request containing username and password
-     * @param sessionId     The session ID
      * @return AuthenticationResponse containing token and refresh token
      * @throws TBSUserServiceException if authentication fails
      */
-    AuthenticationResponse signIn(AuthenticationRequest signInRequest, String sessionId);
+    AuthenticationResponse signIn(AuthenticationRequest signInRequest);
 
     /**
      * Refreshes a user's authentication token.
      *
      * @param token refresh token
-     * @param sessionId session id
      * @return TokenResponse
      */
-    TokenResponse refreshToken(String token, String sessionId);
+    TokenResponse refreshToken(String token);
 
     /**
      * Signs out a user by revoking their refresh token.
@@ -40,5 +38,5 @@ public interface AuthenticationService {
      * @param userId userId
      * @throws TBSUserServiceException if signing out fails
      */
-    void signOut(String userId, String sessionId);
+    void signOut(String userId);
 }

@@ -3,6 +3,7 @@ package com.java.ticketbookingsystem.userservice.security.filters;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
+import com.java.ticketbookingsystem.userservice.utils.CookieUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -58,6 +59,13 @@ public class FirebaseAuthenticationFilter extends OncePerRequestFilter {
      * @return
      */
     private String extractToken(HttpServletRequest request) {
+        // fetch the token from cookies or use the authorization header
+        Optional<String> tokenOptional = CookieUtil.fetchTokenFromCookie(request);
+        if(tokenOptional.isPresent()) {
+            log.info("JWT Token fetched from cookie");
+            return tokenOptional.get();
+        }
+
         String authorization = request.getHeader("Authorization");
         if (authorization != null && authorization.startsWith("Bearer ")) {
             String token = authorization.substring(7);

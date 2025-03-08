@@ -3,15 +3,19 @@ package com.java.ticketbookingsystem.userservice.controller;
 import com.java.ticketbookingsystem.userservice.dto.TokenResponse;
 import com.java.ticketbookingsystem.userservice.exception.TBSUserServiceException;
 import com.java.ticketbookingsystem.userservice.service.auth.AuthenticationService;
+import com.java.ticketbookingsystem.userservice.utils.CookieUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -46,6 +50,13 @@ public class TokenController {
     })
     @GetMapping("/token")
     public ResponseEntity<TokenResponse> fetchToken(HttpServletRequest request) {
+        // Retrive the token from Cookie or Authorization header
+        Optional<String> tokenOptional = CookieUtil.fetchTokenFromCookie(request);
+        if (tokenOptional.isPresent()) {
+            log.info("Token fetched from cookie");
+            return ResponseEntity.ok(new TokenResponse(tokenOptional.get()));
+        }
+
         // Retrieve the token from the Authorization header
         String authorization = request.getHeader("Authorization");
         if (authorization != null && authorization.startsWith("Bearer ")) {
@@ -79,9 +90,14 @@ public class TokenController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @PostMapping("/refresh-token")
-    public ResponseEntity<TokenResponse> refreshToken(@RequestHeader("Authorization") String authHeader, HttpServletRequest request) {
+    public ResponseEntity<TokenResponse> refreshToken(@RequestHeader("Authorization") String authHeader, HttpServletResponse response) {
         log.info("Refreshing token");
         String expiredToken = authHeader.substring(7);
-        return ResponseEntity.ok(authenticationService.refreshToken(expiredToken, request.getSession().getId()));
+
+        // Update the Cookie with new token
+        TokenResponse tokenResponse = authenticationService.refreshToken(expiredToken);
+        CookieUtil.storeAuthTokenCookie(response, tokenResponse.getToken());
+
+        return ResponseEntity.ok(tokenResponse);
     }
 }
