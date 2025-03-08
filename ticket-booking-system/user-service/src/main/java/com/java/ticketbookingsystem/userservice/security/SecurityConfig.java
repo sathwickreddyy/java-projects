@@ -16,7 +16,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    //    private final AWSJwtAuthenticationFilter AWSJwtAuthenticationFilter;
     private final FirebaseAuthenticationFilter firebaseAuthenticationFilter;
 
     public SecurityConfig(FirebaseAuthenticationFilter firebaseAuthenticationFilter) {

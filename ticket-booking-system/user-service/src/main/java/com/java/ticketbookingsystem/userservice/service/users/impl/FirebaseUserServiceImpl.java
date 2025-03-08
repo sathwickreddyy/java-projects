@@ -5,6 +5,7 @@ import com.google.cloud.firestore.Firestore;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseToken;
 import com.java.ticketbookingsystem.userservice.dto.UserDetails;
+import com.java.ticketbookingsystem.userservice.dto.UserDetailsResponse;
 import com.java.ticketbookingsystem.userservice.exception.TBSUserServiceException;
 import com.java.ticketbookingsystem.userservice.service.users.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -38,17 +39,17 @@ public class FirebaseUserServiceImpl implements UserService {
      * @throws TBSUserServiceException if there's an error fetching user details
      */
     @Override
-    public UserDetails getUserDetails(String uid) {
+    public UserDetailsResponse getUserDetails(String uid) {
         try {
             log.info("Fetching user details for {}", uid);
             DocumentSnapshot doc = firestore.collection("users").document(uid).get().get();
-            return UserDetails.builder()
+            return UserDetailsResponse.builder()
                     .username(doc.getString("username"))
                     .email(doc.getString("email"))
                     .name(doc.getString("name"))
                     .phoneNumber(doc.getString("phoneNumber"))
                     .gender(doc.getString("gender"))
-                    .authorities(mapRolesToAuthorities(doc.get("roles")))
+                    .role(mapRolesToAuthorities(doc.get("roles")).toString())
                     .build();
         } catch (Exception e) {
             log.error("Error fetching user details: {}", e.getMessage());

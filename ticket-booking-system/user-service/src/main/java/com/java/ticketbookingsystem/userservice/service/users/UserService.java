@@ -1,6 +1,7 @@
 package com.java.ticketbookingsystem.userservice.service.users;
 
 import com.java.ticketbookingsystem.userservice.dto.UserDetails;
+import com.java.ticketbookingsystem.userservice.dto.UserDetailsResponse;
 import com.java.ticketbookingsystem.userservice.exception.TBSUserServiceException;
 
 /**
@@ -15,7 +16,7 @@ public interface UserService {
      * @return UserDetails object containing user information
      * @throws TBSUserServiceException if there's an error fetching user details
      */
-    UserDetails getUserDetails(String userId);
+    UserDetailsResponse getUserDetails(String userId);
 
     /**
      * Updates the role of a specified user in Cognito.

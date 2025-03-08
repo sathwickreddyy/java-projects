@@ -8,8 +8,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 @Slf4j
 @RestController
@@ -39,19 +41,24 @@ public class TokenController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Token fetched successfully"),
             @ApiResponse(responseCode = "400", description = "Invalid or missing Authorization header"),
-            @ApiResponse(responseCode = "403", description = "Access denied"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/token")
     public ResponseEntity<TokenResponse> fetchToken(HttpServletRequest request) {
+        // Retrieve the token from the Authorization header
         String authorization = request.getHeader("Authorization");
         if (authorization != null && authorization.startsWith("Bearer ")) {
             String token = authorization.substring(7);
             return ResponseEntity.ok(new TokenResponse(token));
-        } else {
-            throw new TBSUserServiceException("Authorization token is missing");
         }
+        /*
+        	•	Issue:  TBSUserServiceException should be reserved for unexpected business logic failures, not just missing headers.
+	        •	Fix:    Use ResponseStatusException from Spring to return 400 Bad Request.
+         */
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Authorization token is missing");
     }
+
 
     /**
      * Refreshes the access token using the provided refresh token.

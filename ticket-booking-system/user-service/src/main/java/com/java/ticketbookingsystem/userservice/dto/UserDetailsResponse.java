@@ -1,6 +1,9 @@
 package com.java.ticketbookingsystem.userservice.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 /**
@@ -8,6 +11,9 @@ import lombok.Data;
  * This class encapsulates essential user attributes.
  */
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserDetailsResponse {
     /**
      * The unique identifier for the user.

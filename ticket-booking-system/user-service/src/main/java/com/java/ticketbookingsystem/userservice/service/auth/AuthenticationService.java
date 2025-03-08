@@ -37,8 +37,8 @@ public interface AuthenticationService {
     /**
      * Signs out a user by revoking their refresh token.
      *
-     * @param username username
+     * @param userId userId
      * @throws TBSUserServiceException if signing out fails
      */
-    void signOut(String username);
+    void signOut(String userId, String sessionId);
 }

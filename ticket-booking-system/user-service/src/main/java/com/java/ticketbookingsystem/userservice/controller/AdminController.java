@@ -2,6 +2,7 @@ package com.java.ticketbookingsystem.userservice.controller;
 
 
 import com.java.ticketbookingsystem.userservice.dto.UserDetails;
+import com.java.ticketbookingsystem.userservice.dto.UserDetailsResponse;
 import com.java.ticketbookingsystem.userservice.exception.TBSUserServiceException;
 import com.java.ticketbookingsystem.userservice.service.users.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -46,12 +47,12 @@ public class AdminController {
             @ApiResponse(responseCode = "403", description = "Access denied"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    public ResponseEntity<UserDetails> getUser(
+    public ResponseEntity<UserDetailsResponse> getUser(
             @Parameter(description = "UserId of the target user", required = true)
             @PathVariable @NotBlank String userId) {
 
         log.info("Received request to fetch details for user: {}", userId);
-        UserDetails userDetails = userService.getUserDetails(userId);
+        UserDetailsResponse userDetails = userService.getUserDetails(userId);
         log.debug("Retrieved user details for {}: {}", userId, userDetails);
         return ResponseEntity.ok(userDetails);
     }

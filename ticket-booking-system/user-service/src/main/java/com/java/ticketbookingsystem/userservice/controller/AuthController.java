@@ -103,9 +103,9 @@ public class AuthController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @DeleteMapping("/signout")
-    public ResponseEntity<Void> signOut() {
+    public ResponseEntity<Void> signOut(HttpServletRequest request) {
         String currentUserId = userService.getCurrentUser();
-        authenticationService.signOut(currentUserId);
+        authenticationService.signOut(currentUserId, request.getSession().getId());
         return ResponseEntity.noContent().build();
     }
 
@@ -129,23 +129,15 @@ public class AuthController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/me")
-    public ResponseEntity<UserDetailsResponse> currentUser() {
+    public ResponseEntity<UserDetailsResponse> currentUser(HttpServletRequest request) {
         log.info("Retrieving current user details");
         String currentUserId = userService.getCurrentUser();
         log.info("Current user ID: {}", currentUserId);
-        UserDetails currentUserDetails = userService.getUserDetails(currentUserId);
+        UserDetailsResponse currentUserDetails = userService.getUserDetails(currentUserId);
         if (currentUserDetails == null) {
             throw new TBSUserServiceException("No current user found");
         }
-        // Map the domain UserDetails to the response DTO.
-        UserDetailsResponse response = new UserDetailsResponse();
-        response.setUsername(currentUserDetails.getUsername());
-        response.setName(currentUserDetails.getName());
-        response.setEmail(currentUserDetails.getEmail());
-        response.setGender(currentUserDetails.getGender());
-        response.setPhoneNumber(currentUserDetails.getPhoneNumber());
-        response.setRole(currentUserDetails.getAuthorities().toString());
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(currentUserDetails);
     }
 
     /**

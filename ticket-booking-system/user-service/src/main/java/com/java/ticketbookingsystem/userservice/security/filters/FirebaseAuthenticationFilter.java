@@ -7,7 +7,6 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -18,39 +17,55 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
 @Component
-@RequiredArgsConstructor
 public class FirebaseAuthenticationFilter extends OncePerRequestFilter {
     private final FirebaseAuth firebaseAuth;
+
+    public FirebaseAuthenticationFilter(FirebaseAuth firebaseAuth) {
+        this.firebaseAuth = firebaseAuth;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         log.info("Firebase authentication filter called");
-        String authorization = request.getHeader("Authorization");
-        if (authorization != null && authorization.startsWith("Bearer ")) {
-            String token = authorization.substring(7);
+
+        String token = extractToken(request);
+
+        if (!token.isEmpty()) {
             try {
                 FirebaseToken decodedToken = firebaseAuth.verifyIdToken(token);
-                Authentication auth = new FirebaseAuthenticationToken(
-                        decodedToken,
-                        extractAuthorities(decodedToken)
-                );
+                Authentication auth = new FirebaseAuthenticationToken(decodedToken, extractAuthorities(decodedToken));
                 SecurityContextHolder.getContext().setAuthentication(auth);
             } catch (FirebaseAuthException e) {
                 log.error("Firebase authentication failed: {}", e.getMessage());
+                SecurityContextHolder.clearContext();
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 return;
             }
         }
+
         filterChain.doFilter(request, response);
     }
+
+    /**
+     * If a token is found in the session, use it. Otherwise, check the Authorization header and update the cache if found.
+     *
+     * @param request
+     * @return
+     */
+    private String extractToken(HttpServletRequest request) {
+        String authorization = request.getHeader("Authorization");
+        if (authorization != null && authorization.startsWith("Bearer ")) {
+            String token = authorization.substring(7);
+            return token;
+        }
+        return "";
+    }
+
 
     /**
      * Expected Behavior:
