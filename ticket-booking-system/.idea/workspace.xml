@@ -5,7 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="97d30be4-257c-4abd-b7a6-4797b978bba4" name="Changes" comment="Adding fetch token mapping">
-      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/java/ticketbookingsystem/userservice/controller/TokenController.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/com/java/ticketbookingsystem/userservice/controller/TokenController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/java/ticketbookingsystem/userservice/configuration/CommonConfigurations.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/java/ticketbookingsystem/userservice/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/com/java/ticketbookingsystem/userservice/controller/AuthController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/java/ticketbookingsystem/userservice/dto/CognitoUserPoolDetails.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/java/ticketbookingsystem/userservice/security/filters/AWSJwtAuthenticationFilter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/java/ticketbookingsystem/userservice/service/auth/impl/FirebaseAuthenticationServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/com/java/ticketbookingsystem/userservice/service/auth/impl/FirebaseAuthenticationServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/java/ticketbookingsystem/userservice/service/users/impl/AWSUserServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/java/ticketbookingsystem/userservice/utils/CognitoJWTValidator.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/java/ticketbookingsystem/userservice/utils/CognitoJwtDecoder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -489,7 +499,7 @@
       <workItem from="1738755964763" duration="42887000" />
       <workItem from="1740072229966" duration="5027000" />
       <workItem from="1740219760653" duration="13868000" />
-      <workItem from="1741293982539" duration="47447000" />
+      <workItem from="1741293982539" duration="48381000" />
     </task>
     <servers />
   </component>

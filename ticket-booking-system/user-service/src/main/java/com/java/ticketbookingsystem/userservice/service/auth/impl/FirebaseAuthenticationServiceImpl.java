@@ -176,9 +176,7 @@ public class FirebaseAuthenticationServiceImpl implements AuthenticationService 
             String newToken = firebaseAuth.createCustomToken(user.getUid());
             log.info("Exchanging new custom token for Id Token Post Refresh");
 
-            // Update tokens in the cache
-            AuthenticationResponse response = exchangeCustomTokenForIdToken(newToken);
-            return new TokenResponse(response.getToken());
+            return new TokenResponse(exchangeCustomTokenForIdToken(newToken).getToken());
         } catch (FirebaseAuthException e) {
             log.error("Token refresh failed: {}", e.getMessage());
             throw new TBSUserServiceException("Token refresh failed, please signin again - " + e.getMessage());

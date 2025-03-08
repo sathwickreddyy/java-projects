@@ -56,6 +56,39 @@ public class AuthController {
     }
 
     /**
+     * Registers a new user in the system
+     *
+     * @param registrationRequest user registration details
+     * @return authentication tokens
+     */
+    @Operation(
+            summary = "Register new user",
+            description = "Creates a new user account with default USER role",
+            tags = {"Authentication"}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "User registered successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid registration request"),
+            @ApiResponse(responseCode = "409", description = "User already exists"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    @PostMapping("/signup")
+    public ResponseEntity<String> signUp(
+            @Parameter(description = "User registration details", required = true)
+            @Valid @RequestBody RegistrationRequest registrationRequest) {
+
+        try {
+            log.info("Registering new user: {}", registrationRequest.getUsername());
+            authenticationService.signUp(registrationRequest);
+            log.info("User registered successfully: {}", registrationRequest.getUsername());
+            return ResponseEntity.status(HttpStatus.CREATED).body("Registration Successful");
+        } catch (Exception e) {
+            log.error("Registration failed: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    /**
      * Signs in a user and returns JWT tokens.
      * <p>
      * This endpoint delegates to Cognito (or your authentication provider) and returns both the access and refresh tokens.
@@ -141,46 +174,12 @@ public class AuthController {
     })
     @GetMapping("/me")
     public ResponseEntity<UserDetailsResponse> currentUser() {
-        log.info("Retrieving current user details");
         String currentUserId = userService.getCurrentUser();
-        log.info("Current user ID: {}", currentUserId);
+        log.info("Retrieving current user details {}", currentUserId);
         UserDetailsResponse currentUserDetails = userService.getUserDetails(currentUserId);
         if (currentUserDetails == null) {
             throw new TBSUserServiceException("No current user found");
         }
         return ResponseEntity.ok(currentUserDetails);
-    }
-
-    /**
-     * Registers a new user in the system
-     *
-     * @param registrationRequest user registration details
-     * @return authentication tokens
-     */
-    @Operation(
-            summary = "Register new user",
-            description = "Creates a new user account with default USER role",
-            tags = {"Authentication"}
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "User registered successfully"),
-            @ApiResponse(responseCode = "400", description = "Invalid registration request"),
-            @ApiResponse(responseCode = "409", description = "User already exists"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
-    })
-    @PostMapping("/signup")
-    public ResponseEntity<String> signUp(
-            @Parameter(description = "User registration details", required = true)
-            @Valid @RequestBody RegistrationRequest registrationRequest) {
-
-        try {
-            log.info("Registering new user: {}", registrationRequest.getUsername());
-            authenticationService.signUp(registrationRequest);
-            log.info("User registered successfully: {}", registrationRequest.getUsername());
-            return ResponseEntity.status(HttpStatus.CREATED).body("Registration Successful");
-        } catch (Exception e) {
-            log.error("Registration failed: {}", e.getMessage());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
     }
 }
