@@ -57,7 +57,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(TicketServiceException.class)
     public ResponseEntity<String> handleTicketServiceException(TicketServiceException ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ticket error: " + ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 
     /**

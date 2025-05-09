@@ -11,6 +11,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -27,7 +28,7 @@ public class ShowServiceImpl implements ShowService {
             log.info("Show created successfully");
         }
         catch (DataAccessException e) {
-            throw new TicketServiceException(TicketServiceExceptionType.SHOW_CREATION_FAILED, "Error creating shows in database.");
+            throw new TicketServiceException(TicketServiceExceptionType.SHOW_CREATION_FAILED, "Error creating shows in database : " + Objects.requireNonNull(e.getRootCause()).getMessage());
         }
     }
 }
