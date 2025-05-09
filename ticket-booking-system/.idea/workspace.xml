@@ -4,19 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="97d30be4-257c-4abd-b7a6-4797b978bba4" name="Changes" comment="Adding fetch token mapping">
-      <change afterPath="$PROJECT_DIR$/ticket-service/src/main/java/com/java/ticketbookingsystem/ticketservice/configuration/GlobalExceptionHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticket-service/src/main/java/com/java/ticketbookingsystem/ticketservice/controller/ShowsController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticket-service/src/main/java/com/java/ticketbookingsystem/ticketservice/enums/TicketServiceExceptionType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticket-service/src/main/java/com/java/ticketbookingsystem/ticketservice/exception/TicketServiceException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticket-service/src/main/java/com/java/ticketbookingsystem/ticketservice/model/ResponseHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticket-service/src/main/java/com/java/ticketbookingsystem/ticketservice/model/ShowRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticket-service/src/main/java/com/java/ticketbookingsystem/ticketservice/repository/ShowsRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticket-service/src/main/java/com/java/ticketbookingsystem/ticketservice/service/ShowService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticket-service/src/main/java/com/java/ticketbookingsystem/ticketservice/service/impl/ShowServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticket-service/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/ticket-service/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticket-service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ticket-service/src/main/resources/application.properties" afterDir="false" />
+    <list default="true" id="97d30be4-257c-4abd-b7a6-4797b978bba4" name="Changes" comment="Adding Create Shows API endpoint">
+      <change beforePath="$PROJECT_DIR$/ticket-service/src/main/java/com/java/ticketbookingsystem/ticketservice/controller/ShowsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/ticket-service/src/main/java/com/java/ticketbookingsystem/ticketservice/controller/ShowsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticket-service/src/main/java/com/java/ticketbookingsystem/ticketservice/service/impl/ShowServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/ticket-service/src/main/java/com/java/ticketbookingsystem/ticketservice/service/impl/ShowServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -98,6 +88,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="Sathwick reddy &lt;sathwickreddyy@outlook.com&gt;" />
+      </list>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -112,6 +107,9 @@
     &quot;accountId&quot;: &quot;821696eb-ead4-4678-9941-5d4b14628965&quot;
   }
 }</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 8
 }</component>
@@ -519,8 +517,25 @@
       <workItem from="1744741471220" duration="5383000" />
       <workItem from="1745752538210" duration="2603000" />
       <workItem from="1746724949878" duration="2095000" />
-      <workItem from="1746763666515" duration="1890000" />
+      <workItem from="1746763666515" duration="2223000" />
     </task>
+    <task id="LOCAL-00001" summary="Adding Create Shows API endpoint">
+      <option name="closed" value="true" />
+      <created>1746765597075</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1746765597075</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Adding Create Shows API endpoint">
+      <option name="closed" value="true" />
+      <created>1746765802095</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1746765802095</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -528,7 +543,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Adding fetch token mapping" />
-    <option name="LAST_COMMIT_MESSAGE" value="Adding fetch token mapping" />
+    <MESSAGE value="Adding Create Shows API endpoint" />
+    <option name="LAST_COMMIT_MESSAGE" value="Adding Create Shows API endpoint" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
