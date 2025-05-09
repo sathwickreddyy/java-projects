@@ -11,7 +11,9 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Data
-@Table(name = "shows")
+@Table(name = "shows", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"theatreId", "movieId", "hallId", "timing", "date"})
+})
 @Entity
 @Builder
 @NoArgsConstructor
