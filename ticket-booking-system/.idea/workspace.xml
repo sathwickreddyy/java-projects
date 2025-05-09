@@ -5,17 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="97d30be4-257c-4abd-b7a6-4797b978bba4" name="Changes" comment="Adding fetch token mapping">
+      <change afterPath="$PROJECT_DIR$/ticket-service/src/main/java/com/java/ticketbookingsystem/ticketservice/configuration/GlobalExceptionHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticket-service/src/main/java/com/java/ticketbookingsystem/ticketservice/controller/ShowsController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticket-service/src/main/java/com/java/ticketbookingsystem/ticketservice/enums/TicketServiceExceptionType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticket-service/src/main/java/com/java/ticketbookingsystem/ticketservice/exception/TicketServiceException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticket-service/src/main/java/com/java/ticketbookingsystem/ticketservice/model/ResponseHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticket-service/src/main/java/com/java/ticketbookingsystem/ticketservice/model/ShowRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticket-service/src/main/java/com/java/ticketbookingsystem/ticketservice/repository/ShowsRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticket-service/src/main/java/com/java/ticketbookingsystem/ticketservice/service/ShowService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticket-service/src/main/java/com/java/ticketbookingsystem/ticketservice/service/impl/ShowServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/java/ticketbookingsystem/userservice/configuration/CommonConfigurations.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/java/ticketbookingsystem/userservice/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/com/java/ticketbookingsystem/userservice/controller/AuthController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/java/ticketbookingsystem/userservice/dto/CognitoUserPoolDetails.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/java/ticketbookingsystem/userservice/security/filters/AWSJwtAuthenticationFilter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/java/ticketbookingsystem/userservice/service/auth/impl/FirebaseAuthenticationServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/com/java/ticketbookingsystem/userservice/service/auth/impl/FirebaseAuthenticationServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/java/ticketbookingsystem/userservice/service/users/impl/AWSUserServiceImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/java/ticketbookingsystem/userservice/utils/CognitoJWTValidator.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/java/ticketbookingsystem/userservice/utils/CognitoJwtDecoder.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticket-service/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/ticket-service/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticket-service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ticket-service/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,6 +90,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Enum" />
+        <option value="package-info" />
         <option value="Interface" />
         <option value="Class" />
       </list>
@@ -134,6 +137,7 @@
     "Gradle.user-service [bootRun].executor": "Run",
     "Gradle.user-service [bootTestRun].executor": "Run",
     "Gradle.user-service [build].executor": "Run",
+    "JUnit.Whole project.executor": "Run",
     "Repository.Attach.Annotations": "false",
     "Repository.Attach.JavaDocs": "false",
     "Repository.Attach.Sources": "false",
@@ -141,7 +145,10 @@
     "RequestMappingsPanelOrder1": "1",
     "RequestMappingsPanelWidth0": "75",
     "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
+    "Spring Boot.TicketServiceApplication (2).executor": "Run",
+    "Spring Boot.TicketServiceApplication.executor": "Run",
     "Spring Boot.UserServiceApplication (1).executor": "Run",
     "Spring Boot.UserServiceApplication (2).executor": "Run",
     "Spring Boot.UserServiceApplication.executor": "Run",
@@ -157,6 +164,11 @@
     "run.configurations.included.in.services": "true",
     "settings.editor.selected.configurable": "preferences.pluginManager",
     "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "postgresql"
+    ]
   }
 }]]></component>
   <component name="RecentsManager">
@@ -192,7 +204,6 @@
               <option value="SearchServiceApplication (1)" />
               <option value="SearchServiceApplication (2)" />
               <option value="TicketServiceApplication (1)" />
-              <option value="TicketServiceApplication (2)" />
               <option value="UserServiceApplication" />
               <option value="UserServiceApplication (2)" />
             </set>
@@ -201,7 +212,7 @@
       </map>
     </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.UserServiceApplication">
+  <component name="RunManager" selected="Spring Boot.TicketServiceApplication">
     <configuration default="true" type="AZURE_FUNCTION_SUPPORT" factoryName="Run Functions">
       <option name="appName" />
       <option name="appServicePlanName" />
@@ -276,34 +287,17 @@
       <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="user-service [bootRun]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/user-service" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="bootRun" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>false</RunAsTest>
-      <method v="2" />
-    </configuration>
     <configuration name="user-service [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
+        <option name="env">
+          <map>
+            <entry key="FIREBASE_API_KEY" value="AIzaSyBMQb1vAFIthTjRtyTjLkOrNN3W_leFGGs" />
+          </map>
+        </option>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$/user-service" />
         <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
+        <option name="scriptParameters" value="" />
         <option name="taskDescriptions">
           <list />
         </option>
@@ -319,6 +313,16 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <RunAsTest>false</RunAsTest>
       <method v="2" />
+    </configuration>
+    <configuration name="Whole project" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TEST_OBJECT" value="package" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="wholeProject" />
+      </option>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <configuration name="MovieManagementServiceApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="ticket-booking-system.movie-management-service.main" />
@@ -390,9 +394,17 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="TicketServiceApplication (2)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+    <configuration name="TicketServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <envs>
+        <env name="DOCKER_USER_POSTGRES_PASSWORD" value="Sathwick@18" />
+      </envs>
       <module name="ticket-booking-system.ticket-service.main" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.java.ticketbookingsystem.ticketservice.TicketServiceApplication" />
+      <extension name="software.aws.toolkits.jetbrains.core.execution.JavaAwsConnectionExtension">
+        <option name="credential" />
+        <option name="region" />
+        <option name="useCurrentConnection" value="false" />
+      </extension>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -418,7 +430,10 @@
       </method>
     </configuration>
     <configuration name="UserServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
-      <module name="user-service.main" />
+      <envs>
+        <env name="FIREBASE_API_KEY" value="AIzaSyBMQb1vAFIthTjRtyTjLkOrNN3W_leFGGs" />
+      </envs>
+      <module name="ticket-booking-system.user-service.main" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.java.ticketbookingsystem.userservice.UserServiceApplication" />
       <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$/user-service" />
       <extension name="software.aws.toolkits.jetbrains.core.execution.JavaAwsConnectionExtension">
@@ -444,40 +459,39 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="Gradle.ticket-booking-system:user-service [clean]" />
-      <item itemvalue="Gradle.user-service [bootRun]" />
       <item itemvalue="Gradle.ticket-booking-system [build]" />
+      <item itemvalue="Gradle.ticket-booking-system:user-service [clean]" />
       <item itemvalue="Gradle.user-service [build]" />
-      <item itemvalue="Spring Boot.MovieManagementServiceApplication (2)" />
-      <item itemvalue="Spring Boot.PaymentServiceApplication (2)" />
-      <item itemvalue="Spring Boot.SearchServiceApplication (2)" />
-      <item itemvalue="Spring Boot.TicketServiceApplication (2)" />
-      <item itemvalue="Spring Boot.UserServiceApplication" />
-      <item itemvalue="Spring Boot.MovieManagementServiceApplication" />
+      <item itemvalue="JUnit.Whole project" />
       <item itemvalue="Spring Boot.MovieManagementServiceApplication (1)" />
-      <item itemvalue="Spring Boot.PaymentServiceApplication" />
+      <item itemvalue="Spring Boot.MovieManagementServiceApplication (2)" />
+      <item itemvalue="Spring Boot.MovieManagementServiceApplication" />
       <item itemvalue="Spring Boot.PaymentServiceApplication (1)" />
-      <item itemvalue="Spring Boot.SearchServiceApplication" />
+      <item itemvalue="Spring Boot.PaymentServiceApplication (2)" />
+      <item itemvalue="Spring Boot.PaymentServiceApplication" />
       <item itemvalue="Spring Boot.SearchServiceApplication (1)" />
-      <item itemvalue="Spring Boot.TicketServiceApplication" />
+      <item itemvalue="Spring Boot.SearchServiceApplication (2)" />
+      <item itemvalue="Spring Boot.SearchServiceApplication" />
       <item itemvalue="Spring Boot.TicketServiceApplication (1)" />
+      <item itemvalue="Spring Boot.TicketServiceApplication" />
+      <item itemvalue="Spring Boot.UserServiceApplication" />
       <item itemvalue="Spring Boot.UserServiceApplication (2)" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Gradle.user-service [build]" />
+        <item itemvalue="JUnit.Whole project" />
         <item itemvalue="Gradle.ticket-booking-system:user-service [clean]" />
         <item itemvalue="Gradle.ticket-booking-system [build]" />
         <item itemvalue="Spring Boot.UserServiceApplication (2)" />
-        <item itemvalue="Gradle.user-service [bootRun]" />
       </list>
     </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-125ca727e0f0-intellij.indexing.shared.core-IU-243.24978.46" />
-        <option value="bundled-js-predefined-d6986cc7102b-76f8388c3a79-JavaScript-IU-243.24978.46" />
+        <option value="bundled-jdk-9823dce3aa75-a94e463ab2e7-intellij.indexing.shared.core-IU-243.26053.27" />
+        <option value="bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-IU-243.26053.27" />
       </set>
     </attachedChunks>
   </component>
@@ -499,7 +513,13 @@
       <workItem from="1738755964763" duration="42887000" />
       <workItem from="1740072229966" duration="5027000" />
       <workItem from="1740219760653" duration="13868000" />
-      <workItem from="1741293982539" duration="48381000" />
+      <workItem from="1741293982539" duration="51848000" />
+      <workItem from="1741964837556" duration="673000" />
+      <workItem from="1742141648898" duration="25000" />
+      <workItem from="1744741471220" duration="5383000" />
+      <workItem from="1745752538210" duration="2603000" />
+      <workItem from="1746724949878" duration="2095000" />
+      <workItem from="1746763666515" duration="1890000" />
     </task>
     <servers />
   </component>
