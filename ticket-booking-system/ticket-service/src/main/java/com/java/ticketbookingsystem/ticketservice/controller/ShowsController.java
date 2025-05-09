@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequestMapping("/v1/shows")
@@ -22,9 +24,9 @@ public class ShowsController {
     private final ShowService showService;
 
     @PostMapping
-    public ResponseEntity<ResponseHandler<String>> createShow(@RequestBody @Valid ShowRequest showRequest) {
-        log.info("Request to create Show request: {}", showRequest);
-        showService.createShow(showRequest);
+    public ResponseEntity<ResponseHandler<String>> createShow(@RequestBody @Valid List<ShowRequest> showRequests) {
+        log.info("Request to create Show request: {}", showRequests.size());
+        showService.createShow(showRequests);
         ResponseHandler<String> responseHandler = new ResponseHandler<>();
         responseHandler.setMessage("Show created successfully");
         return ResponseEntity.status(HttpStatus.CREATED).body(responseHandler);

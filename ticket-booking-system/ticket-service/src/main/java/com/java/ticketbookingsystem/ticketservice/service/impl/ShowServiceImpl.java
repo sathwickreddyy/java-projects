@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -16,9 +18,9 @@ public class ShowServiceImpl implements ShowService {
     private final ShowsRepository showsRepository;
 
     @Override
-    public void createShow(ShowRequest showRequest) throws TicketServiceException {
-        log.info("Creating show: {}", showRequest);
-        showsRepository.save(showRequest);
+    public void createShow(List<ShowRequest> showRequests) throws TicketServiceException {
+        log.info("Creating shows: {}", showRequests.size());
+        showsRepository.saveAll(showRequests);
         log.info("Show created successfully");
     }
 }

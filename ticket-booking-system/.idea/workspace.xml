@@ -4,10 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="97d30be4-257c-4abd-b7a6-4797b978bba4" name="Changes" comment="Adding logs on the flow">
+    <list default="true" id="97d30be4-257c-4abd-b7a6-4797b978bba4" name="Changes" comment="Adding postgres dependency">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticket-service/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/ticket-service/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticket-service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ticket-service/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticket-service/src/main/java/com/java/ticketbookingsystem/ticketservice/controller/ShowsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/ticket-service/src/main/java/com/java/ticketbookingsystem/ticketservice/controller/ShowsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticket-service/src/main/java/com/java/ticketbookingsystem/ticketservice/service/ShowService.java" beforeDir="false" afterPath="$PROJECT_DIR$/ticket-service/src/main/java/com/java/ticketbookingsystem/ticketservice/service/ShowService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticket-service/src/main/java/com/java/ticketbookingsystem/ticketservice/service/impl/ShowServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/ticket-service/src/main/java/com/java/ticketbookingsystem/ticketservice/service/impl/ShowServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -522,7 +523,7 @@
       <workItem from="1744741471220" duration="5383000" />
       <workItem from="1745752538210" duration="2603000" />
       <workItem from="1746724949878" duration="2095000" />
-      <workItem from="1746763666515" duration="2554000" />
+      <workItem from="1746763666515" duration="3064000" />
     </task>
     <task id="LOCAL-00001" summary="Adding Create Shows API endpoint">
       <option name="closed" value="true" />
@@ -548,7 +549,15 @@
       <option name="project" value="LOCAL" />
       <updated>1746765907339</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Adding postgres dependency">
+      <option name="closed" value="true" />
+      <created>1746766421263</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1746766421263</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -558,7 +567,8 @@
     <MESSAGE value="Adding fetch token mapping" />
     <MESSAGE value="Adding Create Shows API endpoint" />
     <MESSAGE value="Adding logs on the flow" />
-    <option name="LAST_COMMIT_MESSAGE" value="Adding logs on the flow" />
+    <MESSAGE value="Adding postgres dependency" />
+    <option name="LAST_COMMIT_MESSAGE" value="Adding postgres dependency" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
