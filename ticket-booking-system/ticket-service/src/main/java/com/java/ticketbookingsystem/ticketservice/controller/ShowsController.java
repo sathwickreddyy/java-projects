@@ -28,7 +28,7 @@ public class ShowsController {
         log.info("Request to create Show request: {}", showRequests.size());
         showService.createShow(showRequests);
         ResponseHandler<String> responseHandler = new ResponseHandler<>();
-        responseHandler.setMessage("Show created successfully");
+        responseHandler.setMessage("Shows created successfully");
         return ResponseEntity.status(HttpStatus.CREATED).body(responseHandler);
     }
 
