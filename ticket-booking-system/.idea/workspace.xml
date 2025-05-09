@@ -4,10 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="97d30be4-257c-4abd-b7a6-4797b978bba4" name="Changes" comment="Ensure that no duplicate records with the same information are persisted in the database">
+    <list default="true" id="97d30be4-257c-4abd-b7a6-4797b978bba4" name="Changes" comment="Adding proper error messages">
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticket-service/src/main/java/com/java/ticketbookingsystem/ticketservice/controller/ShowsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/ticket-service/src/main/java/com/java/ticketbookingsystem/ticketservice/controller/ShowsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticket-service/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/ticket-service/.gitignore" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -522,7 +522,7 @@
       <workItem from="1744741471220" duration="5383000" />
       <workItem from="1745752538210" duration="2603000" />
       <workItem from="1746724949878" duration="2095000" />
-      <workItem from="1746763666515" duration="3501000" />
+      <workItem from="1746763666515" duration="4040000" />
     </task>
     <task id="LOCAL-00001" summary="Adding Create Shows API endpoint">
       <option name="closed" value="true" />
@@ -580,7 +580,31 @@
       <option name="project" value="LOCAL" />
       <updated>1746767094751</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Minor refactoring">
+      <option name="closed" value="true" />
+      <created>1746767187298</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1746767187298</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Adding proper error messages">
+      <option name="closed" value="true" />
+      <created>1746767530159</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1746767530159</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Adding proper error messages">
+      <option name="closed" value="true" />
+      <created>1746767544799</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1746767544799</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -593,7 +617,9 @@
     <MESSAGE value="Adding postgres dependency" />
     <MESSAGE value="Accept List of Show Requests instead of single" />
     <MESSAGE value="Ensure that no duplicate records with the same information are persisted in the database" />
-    <option name="LAST_COMMIT_MESSAGE" value="Ensure that no duplicate records with the same information are persisted in the database" />
+    <MESSAGE value="Minor refactoring" />
+    <MESSAGE value="Adding proper error messages" />
+    <option name="LAST_COMMIT_MESSAGE" value="Adding proper error messages" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
